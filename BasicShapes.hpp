@@ -39,13 +39,13 @@ public:
 };
 
 //Equivalent to Polygon(3,  sideLength).
-class Square : public Shape {
+class Square : public Polygon {
 public:
     Square(double sideLength);
 };
 
 //Equivalant to Polygon(4, sideLength).
-class Triangle : public Shape {
+class Triangle : public Polygon {
 public:
     Triangle(double sideLength);
 };
