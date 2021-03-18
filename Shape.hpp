@@ -10,6 +10,9 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
+#include <math.h>
+
+
 class Shape {
 public:
     virtual ~Shape() = default;
@@ -19,6 +22,7 @@ public:
 protected:
 	int _height;
 	int _width;
+	const double PI = 3.14159274101257324219;
 };
 
 #endif // !SHAPE_HPP

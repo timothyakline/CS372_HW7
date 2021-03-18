@@ -24,6 +24,12 @@ public:
 class Polygon : public Shape {
 public:
     Polygon(int numSides, double sideLength);
+protected:
+	int _numSides;
+	int _sideLength;
+
+	void setHeightAndWidth();
+
 };
 
 //Creates a rectangle of the given width and height.
