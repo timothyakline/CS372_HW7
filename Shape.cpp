@@ -9,3 +9,11 @@
 // VERS: 1.0
 
 #include "Shape.hpp"
+
+int Shape::getHeight() const{
+	return _height;
+}
+
+int Shape::getWidth() const {
+	return _width;
+}

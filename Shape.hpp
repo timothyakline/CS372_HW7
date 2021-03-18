@@ -13,6 +13,12 @@
 class Shape {
 public:
     virtual ~Shape() = default;
+	int getHeight() const;
+	int getWidth() const;
+
+protected:
+	int _height;
+	int _width;
 };
 
 #endif // !SHAPE_HPP
