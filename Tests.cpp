@@ -2,7 +2,16 @@
 #include "Shape.hpp"
 #include "BasicShapes.hpp"
 #include "CompoundShapes.hpp"
+using std::make_unique;
 #include "PostScriptHelper.hpp"
+
+const auto RADIUS_DBL = 7.0;
+const auto RADIUS_INT = 7;
+const auto TEST_SIDES = 5;
+const auto TEST_LENGTH = 4.5;
+const auto TEST_WIDTH = 3.7;
+const auto TEST_HEIGHT = 8.5;
+const auto PI = 3.14159274101257324219;
 
 TEST_CASE("Shape base class construction", "[baseclass]")
 {
@@ -24,13 +33,6 @@ TEST_CASE("Shape base class construction", "[baseclass]")
 
 TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 {
-	const auto RADIUS_DBL = 7.0;
-	const auto RADIUS_INT = 7;
-	const auto TEST_SIDES = 5;
-	const auto TEST_LENGTH = 4.5;
-	const auto TEST_WIDTH = 3.7;
-	const auto TEST_HEIGHT = 8.5;
-
 	Circle defaultCircle;
 	Circle sizedIntCircle(RADIUS_INT);
 	Circle sizedDblCircle(RADIUS_DBL);
@@ -49,8 +51,10 @@ TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 
 	Triangle defaultTriangle;
 	Triangle sizedTriangle(TEST_LENGTH);
-
 	
+	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
+	RotatedShape rotateTriangle(move(tri1), QUARTER);
+
 	SECTION("Shape") {
 		SECTION("Default Base class init") {
 				REQUIRE ( defaultCircle.getHeight() == 0 );
@@ -74,6 +78,12 @@ TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 
 		}
 	}
+}
+
+TEST_CASE("Complex shape inheritance", "[baseclass][complex]")
+{
+	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
+	RotatedShape rotateTriangle(move(tri1), QUARTER);
 }
 
 TEST_CASE("Post script helper functinos") {

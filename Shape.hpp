@@ -13,12 +13,10 @@
 
 #include <math.h>
 
+using Width_Type = double;
+using Height_Type = double;
 
 class Shape {
-public:
-	using Width_Type = double;
-	using Height_Type = double;
-	
 public:
 	Shape(Width_Type width=0, Height_Type height=0) : _width(width), _height(height) {}
     virtual ~Shape() = default;

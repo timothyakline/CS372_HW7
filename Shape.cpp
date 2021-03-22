@@ -11,10 +11,10 @@
 
 #include "Shape.hpp"
 
-int Shape::getHeight() const{
+Height_Type Shape::getHeight() const{
 	return _height;
 }
 
-int Shape::getWidth() const {
+Width_Type Shape::getWidth() const {
 	return _width;
 }
