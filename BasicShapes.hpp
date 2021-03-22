@@ -27,7 +27,7 @@ protected:
 class Polygon : public Shape {
 public:
     using Length_Type = double;
-    
+
 public:
     Polygon(int numSides=3, Length_Type sideLength=0.0);
 protected:
@@ -41,25 +41,25 @@ protected:
 //Creates a rectangle of the given width and height.
 class Rectangle : public Shape {
 public:
-    Rectangle(Width_Type width, Height_Type height);
+    Rectangle(Width_Type width=0.0, Height_Type height=0.0);
 };
 
 //Like a rectangle, but without drawn borders. A spacer is not visible on the page.
 class Spacer : public Shape {
 public:
-    Spacer(Width_Type width, Height_Type height);
+    Spacer(Width_Type width=0.0, Height_Type height=0.0);
 };
 
 //Equivalent to Polygon(3,  sideLength).
 class Square : public Polygon {
 public:
-    Square(Length_Type sideLength);
+    Square(Length_Type sideLength=0.0);
 };
 
 //Equivalant to Polygon(4, sideLength).
 class Triangle : public Polygon {
 public:
-    Triangle(Length_Type sideLength);
+    Triangle(Length_Type sideLength=0.0);
 };
 
 #endif // !BASICSHAPES_HPP

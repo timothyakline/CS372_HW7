@@ -1,7 +1,80 @@
-/*
-
 #include "catch.hpp"
+#include "Shape.hpp"
+#include "BasicShapes.hpp"
+#include "CompoundShapes.hpp"
 #include "PostScriptHelper.hpp"
+
+TEST_CASE("Shape base class construction", "[baseclass]")
+{
+	const auto TEST_HEIGHT = 8;
+	const auto TEST_WIDTH = 5;
+	Shape defaultShape;
+	Shape sizedShape(TEST_WIDTH, TEST_HEIGHT);
+
+	SECTION("Default Shape") {
+		REQUIRE( defaultShape.getHeight() == 0 );
+		REQUIRE( defaultShape.getWidth() == 0 );
+	}
+
+	SECTION("Defined Shape") {
+		REQUIRE( sizedShape.getWidth() == TEST_WIDTH );
+		REQUIRE( sizedShape.getHeight() == TEST_HEIGHT );
+	}
+}
+
+TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
+{
+	const auto RADIUS_DBL = 7.0;
+	const auto RADIUS_INT = 7;
+	const auto TEST_SIDES = 5;
+	const auto TEST_LENGTH = 4.5;
+	const auto TEST_WIDTH = 3.7;
+	const auto TEST_HEIGHT = 8.5;
+
+	Circle defaultCircle;
+	Circle sizedIntCircle(RADIUS_INT);
+	Circle sizedDblCircle(RADIUS_DBL);
+
+	Polygon defaultPoly;
+	Polygon sizedPoly(TEST_SIDES, TEST_LENGTH);
+
+	Rectangle defaultRectangle;
+	Rectangle sizedRectangle(TEST_WIDTH, TEST_HEIGHT);
+
+	Spacer defaultSpacer;
+	Spacer sizedSpacer(TEST_WIDTH, TEST_HEIGHT);
+
+	Square defaultSquare;
+	Square sizedSquare(TEST_LENGTH);
+
+	Triangle defaultTriangle;
+	Triangle sizedTriangle(TEST_LENGTH);
+
+	
+	SECTION("Shape") {
+		SECTION("Default Base class init") {
+				REQUIRE ( defaultCircle.getHeight() == 0 );
+				REQUIRE ( defaultCircle.getWidth() == 0);
+				REQUIRE ( defaultPoly.getHeight() ==  0.0 * (1 + cos(PI / 3)) / (2 * sin(PI / 3)) );
+				REQUIRE ( defaultPoly.getWidth() ==  (0.0 * sin(PI * (3 - 1) / (2 * 3))) / sin(PI / 3) );
+			}
+	}
+
+	SECTION("Circle") {
+		SECTION("Defined Base class init") {
+			REQUIRE ( sizedIntCircle.getHeight() == RADIUS_INT );
+			REQUIRE ( sizedIntCircle.getWidth() == RADIUS_INT );
+			REQUIRE ( sizedDblCircle.getHeight() == int(RADIUS_DBL) );
+			REQUIRE ( sizedDblCircle.getWidth() == int(RADIUS_DBL) );
+		}
+	}
+
+	SECTION("Polygon") {
+		SECTION("Defined Base class init") {
+
+		}
+	}
+}
 
 TEST_CASE("Post script helper functinos") {
 	SECTION("Basic commands") {
@@ -27,4 +100,3 @@ TEST_CASE("Check helper functions visually with a postscript editor"){
 	//DOUBLECHECK
 	REQUIRE(0);
 }
-*/

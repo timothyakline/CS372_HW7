@@ -1,4 +1,4 @@
-
+/*
 
 #include "BasicShapes.hpp"
 #include "CompoundShapes.hpp"
@@ -21,3 +21,4 @@ int main()
 	fs.close();
     return 0;
 }
+*/
