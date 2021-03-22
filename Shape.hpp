@@ -16,12 +16,12 @@
 
 class Shape {
 public:
+	Shape(int width=0, int height=0) : _width(width), _height(height) {}
     virtual ~Shape() = default;
 	int getHeight() const;
 	int getWidth() const;
 
 protected:
-	Shape(int height=0, int width=0) : _height(height), _width(width) {}
 	int _height;
 	int _width;
 	const double PI = 3.14159274101257324219;
