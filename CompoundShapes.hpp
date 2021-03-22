@@ -43,6 +43,7 @@ protected:
     shape_ptr _shape;
 };
 
+//Tim: Make into an interface instead?
 class ComplexShape {
 public:
     virtual ~ComplexShape() = default;

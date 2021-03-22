@@ -2,11 +2,11 @@
 // DESC: Basic shape classes
 // AUTH: Timothy Albert Kline
 //		 Jacob Jakiemiec
-//       {ADD YOUR NAMES HERE}
+//       {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: N/A
+// UPDT: 22 March 2021
 // VERS: 1.0
 #ifndef BASICSHAPES_HPP
 #define BASICSHAPES_HPP

@@ -1,3 +1,13 @@
+// FNAM: Tests.cpp
+// DESC: Our TDD file. Uses Catch2
+// AUTH: Jacob Jakiemiec
+//		 Timothy Albert Kline
+//       {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
+// CRSE: F372 - Software Construction
+// PROF: Dr. Chris Hartman
+// STRT: 21 March 2021
+// UPDT: 22 March 2021
+// VERS: 1.0
 #include "catch.hpp"
 #include "Shape.hpp"
 #include "BasicShapes.hpp"
@@ -57,11 +67,11 @@ TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 
 	SECTION("Shape") {
 		SECTION("Default Base class init") {
-				REQUIRE ( defaultCircle.getHeight() == 0 );
-				REQUIRE ( defaultCircle.getWidth() == 0);
-				REQUIRE ( defaultPoly.getHeight() ==  0.0 * (1 + cos(PI / 3)) / (2 * sin(PI / 3)) );
-				REQUIRE ( defaultPoly.getWidth() ==  (0.0 * sin(PI * (3 - 1) / (2 * 3))) / sin(PI / 3) );
-			}
+			REQUIRE ( defaultCircle.getHeight() == 0 );
+			REQUIRE ( defaultCircle.getWidth() == 0);
+			REQUIRE ( defaultPoly.getHeight() ==  0.0 * (1 + cos(PI / 3)) / (2 * sin(PI / 3)) );
+			REQUIRE ( defaultPoly.getWidth() ==  (0.0 * sin(PI * (3 - 1) / (2 * 3))) / sin(PI / 3) );
+		}
 	}
 
 	SECTION("Circle") {
