@@ -17,9 +17,11 @@ string moveTo( int x, int y) {
 string RMoveTo(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " rmoveto\n";
 }
+
 string lineTo(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " lineto\n";
 }
+
 string RLineTo(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " rlineto\n";
 }
@@ -28,6 +30,15 @@ string RLineTo(int x, int y) {
 string rotate(int angle) {
 	return to_string(angle) + " rotate\n";
 }
+
 string stroke() {
 	return "stroke\n";
+}
+
+string header() {
+	return "%!\n\n";
+}
+
+string showpage() {
+	return "showpage\n";
 }

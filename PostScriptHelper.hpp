@@ -24,6 +24,8 @@ string lineTo(int x, int y);
 string RLineTo(int x, int y);
 string rotate(int angle);
 string stroke();
+string showpage();
+string header();
 
 
 #endif
