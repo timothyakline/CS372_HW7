@@ -1,6 +1,7 @@
 // FNAM: BasicShapes.hpp
 // DESC: Basic shape classes
 // AUTH: Timothy Albert Kline
+//		 Jacob Jakiemiec
 //       {ADD YOUR NAMES HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman

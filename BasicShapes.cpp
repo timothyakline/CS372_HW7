@@ -1,18 +1,23 @@
 // FNAM: BasicShapes.cpp
 // DESC: Basic shape class functions
 // AUTH: Timothy Albert Kline
+//		 Jacob Jakiemiec
 //       {ADD YOUR NAMES HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: N/A
+// UPDT: 22 March 2021
 // VERS: 1.0
 
 #include "BasicShapes.hpp"
 
-Circle::Circle(double radius){
+Circle::Circle(double radius)
+	: Shape { radius * 2, radius * 2 }
+{
+	/*
 	_height = radius * 2;
 	_width = radius * 2;
+	*/
 }
 
 Polygon::Polygon(int numSides, double sideLength): _numSides(numSides), _sideLength(sideLength){
@@ -36,14 +41,23 @@ void Polygon::setHeightAndWidth() {
 
 //FIX?
 //I forgot how to use initializer lists for the base class member variables, so rectangle and spacer just have those member variable initializations inside the function
-Rectangle::Rectangle(double width, double height){
+//TIM: I found this - https://www.learncpp.com/cpp-tutorial/constructors-and-initialization-of-derived-classes/
+Rectangle::Rectangle(double width, double height)
+	: Shape { width, height }
+{
+	/*
 	_width = width;
 	_height = height;
+	*/
 }
 
-Spacer::Spacer(double width, double height){
+Spacer::Spacer(double width, double height)
+	: Shape { width, height }
+{
+	/*
 	_width = width;
 	_height = height;
+	*/
 }
 
 Square::Square(double sideLength): Polygon(4, sideLength){}
