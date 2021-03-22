@@ -11,21 +11,23 @@
 #include "PostScriptHelper.hpp"
 
 string moveTo( int x, int y) {
-	return to_string(x) + " " + to_string(y) + "moveTo\n";
+	return to_string(x) + " " + to_string(y) + " moveto\n";
 }
 
 string RMoveTo(int x, int y) {
-	return to_string(x) + " " + to_string(y) + "rmoveTo\n";
+	return to_string(x) + " " + to_string(y) + " rmoveto\n";
 }
 string lineTo(int x, int y) {
-	return "S";
+	return to_string(x) + " " + to_string(y) + " lineto\n";
 }
 string RLineTo(int x, int y) {
-	return "s";
+	return to_string(x) + " " + to_string(y) + " rlineto\n";
 }
+
+//angle is clockwise
 string rotate(int angle) {
-	return "s";
+	return to_string(angle) + " rotate\n";
 }
 string stroke() {
-	return "s";
+	return "stroke\n";
 }
