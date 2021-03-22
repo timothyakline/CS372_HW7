@@ -17,7 +17,9 @@
 //The height and width of a circle are both 2*radius.
 class Circle : public Shape {
 public:
-    Circle(double radius);
+    Circle(double radius=0.0);
+protected:
+    double _radius;
 };
 
 //Creates a regular polygon with the given number of sides,

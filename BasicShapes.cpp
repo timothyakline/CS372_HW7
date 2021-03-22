@@ -12,7 +12,8 @@
 #include "BasicShapes.hpp"
 
 Circle::Circle(double radius)
-	: Shape { radius * 2, radius * 2 }
+	: Shape { radius * 2, radius * 2 },
+		_radius(radius)
 {
 	/*
 	_height = radius * 2;
@@ -41,7 +42,7 @@ void Polygon::setHeightAndWidth() {
 
 //FIX?
 //I forgot how to use initializer lists for the base class member variables, so rectangle and spacer just have those member variable initializations inside the function
-//TIM: I found this - https://www.learncpp.com/cpp-tutorial/constructors-and-initialization-of-derived-classes/
+//Tim: I found this - https://www.learncpp.com/cpp-tutorial/constructors-and-initialization-of-derived-classes/
 Rectangle::Rectangle(double width, double height)
 	: Shape { width, height }
 {
