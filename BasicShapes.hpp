@@ -26,10 +26,13 @@ protected:
 //each of the given length, oriented so that its lowermost side is horizontal.
 class Polygon : public Shape {
 public:
-    Polygon(int numSides, double sideLength);
+    using Length_Type = double;
+    
+public:
+    Polygon(int numSides=3, Length_Type sideLength=0.0);
 protected:
 	int _numSides;
-	int _sideLength;
+	Length_Type _sideLength;
 
 	void setHeightAndWidth();
 
@@ -38,25 +41,25 @@ protected:
 //Creates a rectangle of the given width and height.
 class Rectangle : public Shape {
 public:
-    Rectangle(double width, double height);
+    Rectangle(Width_Type width, Height_Type height);
 };
 
 //Like a rectangle, but without drawn borders. A spacer is not visible on the page.
 class Spacer : public Shape {
 public:
-    Spacer(double width, double height);
+    Spacer(Width_Type width, Height_Type height);
 };
 
 //Equivalent to Polygon(3,  sideLength).
 class Square : public Polygon {
 public:
-    Square(double sideLength);
+    Square(Length_Type sideLength);
 };
 
 //Equivalant to Polygon(4, sideLength).
 class Triangle : public Polygon {
 public:
-    Triangle(double sideLength);
+    Triangle(Length_Type sideLength);
 };
 
 #endif // !BASICSHAPES_HPP

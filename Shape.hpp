@@ -16,14 +16,18 @@
 
 class Shape {
 public:
-	Shape(int width=0, int height=0) : _width(width), _height(height) {}
+	using Width_Type = double;
+	using Height_Type = double;
+	
+public:
+	Shape(Width_Type width=0, Height_Type height=0) : _width(width), _height(height) {}
     virtual ~Shape() = default;
-	int getHeight() const;
-	int getWidth() const;
+	Height_Type getHeight() const;
+	Width_Type getWidth() const;
 
 protected:
-	int _height;
-	int _width;
+	Width_Type _width;
+	Height_Type _height;
 	const double PI = 3.14159274101257324219;
 };
 
