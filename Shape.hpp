@@ -24,7 +24,7 @@ public:
     virtual ~Shape() = default;
 	Height_Type getHeight() const;
 	Width_Type getWidth() const;
-	virtual void doPostScript(std::ostream& os) const = 0;
+	virtual void doPostScript(std::ostream& os) const {};
 
 protected:
 	Width_Type _width;

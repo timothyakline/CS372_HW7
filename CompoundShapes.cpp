@@ -11,8 +11,8 @@
 #include <algorithm>
 #include "CompoundShapes.hpp"
 
-RotatedShape::RotatedShape(shape_ptr shape, const RotationAngle &rotationAngle)
-    :_shape(move(shape)), _rotation(rotationAngle)
+RotatedShape::RotatedShape(shape_ptr shape, const RotationAngle& rotationAngle) 
+    :_shape(move(shape)), _rotation(rotationAngle) 
 {
     switch(rotationAngle)
     {
@@ -41,16 +41,17 @@ ScaledShape::ScaledShape(shape_ptr shape, double fx, double fy)
 void ScaledShape::doPostScript(std::ostream& os) const {
     os << gsave << _width << " " << _height << " scale ";
     _shape->doPostScript(os);
-    os << grestore;
+    os << " " << grestore;
 }
 
-shape_ptr ComplexShape::getShapes() const
-{
+/*
+shape_ptr ComplexShape::getShapes() const {
     //[WRITE ME]
     //ITERATE THROUGH _shapes TO GET SHAPES
     //Use a coroutine?
     //Include in C++ to PostScript files instead?
 }
+*/
 
 void ComplexShape::doPostScript(std::ostream& os) const {
 
@@ -64,7 +65,8 @@ LayeredShape::LayeredShape(shape_ptr shape)
 }
 
 void LayeredShape::doPostScript(std::ostream& os) const {
-    //Riley : TO-DO
+    //for (auto s : _shapes)
+      //  s->createPostScript(os);
 }
 
 VerticalShape::VerticalShape(shape_ptr shape)
@@ -75,7 +77,11 @@ VerticalShape::VerticalShape(shape_ptr shape)
 }
 
 void VerticalShape::doPostScript(std::ostream& os) const {
-    //Riley : TO-DO
+    for (int i = 1; i <= _shapes.size(); ++i) {
+        os << gsave << " 0 " << _shapes[i - 1]->getHeight() * i << " " << translate(CenterX, CenterY);
+        _shapes[i - 1]->doPostScript(os);
+        os << " " << grestore;
+    }
 }
 
 HorizontalShape::HorizontalShape(shape_ptr shape)
@@ -86,5 +92,9 @@ HorizontalShape::HorizontalShape(shape_ptr shape)
 }
 
 void HorizontalShape::doPostScript(std::ostream& os) const {
-    //Riley : TO-DO
+    for (int i = 1; i <= _shapes.size(); ++i) {
+        os << gsave << _shapes[i - 1]->getWidth() * i << " 0 " << translate(CenterX, CenterY);
+        _shapes[i - 1]->doPostScript(os);
+        os << " grestore ";
+    }
 }

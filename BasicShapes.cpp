@@ -16,10 +16,8 @@ Circle::Circle(double radius)
 	: Shape { radius * 2, radius * 2 },
 		_radius(radius)
 {
-	/*
 	_height = radius * 2;
 	_width = radius * 2;
-	*/
 }
 
 void Circle::doPostScript(std::ostream& os) const {
@@ -76,6 +74,8 @@ Spacer::Spacer(Width_Type width, Height_Type height)
 	_height = height;
 	*/
 }
+
+void Spacer::doPostScript(std::ostream& os) const {}
 
 Square::Square(Length_Type sideLength): Polygon(4, sideLength){}
 

@@ -67,7 +67,7 @@ TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 	SECTION("Shape") {
 		SECTION("Default Base class init") {
 			REQUIRE ( defaultCircle.getHeight() == 0 );
-			REQUIRE ( defaultCircle.getWidth() == 0);
+			REQUIRE ( defaultCircle.getWidth() == 0 );
 			REQUIRE ( defaultPoly.getHeight() ==  0.0 * (1 + cos(PI / 3)) / (2 * sin(PI / 3)) );
 			REQUIRE ( defaultPoly.getWidth() ==  (0.0 * sin(PI * (3 - 1) / (2 * 3))) / sin(PI / 3) );
 		}
@@ -75,10 +75,10 @@ TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 
 	SECTION("Circle") {
 		SECTION("Defined Base class init") {
-			REQUIRE ( sizedIntCircle.getHeight() == RADIUS_INT );
-			REQUIRE ( sizedIntCircle.getWidth() == RADIUS_INT );
-			REQUIRE ( sizedDblCircle.getHeight() == int(RADIUS_DBL) );
-			REQUIRE ( sizedDblCircle.getWidth() == int(RADIUS_DBL) );
+			REQUIRE ( sizedIntCircle.getHeight() == RADIUS_INT * 2);
+			REQUIRE ( sizedIntCircle.getWidth() == RADIUS_INT * 2);
+			REQUIRE ( sizedDblCircle.getHeight() == RADIUS_DBL * 2);
+			REQUIRE ( sizedDblCircle.getWidth() == RADIUS_DBL * 2);
 		}
 	}
 
@@ -108,6 +108,9 @@ TEST_CASE("Post script helper functinos") {
 		REQUIRE(stroke() == "stroke\n");
 		REQUIRE(header() == "%!\n\n");
 		REQUIRE(showpage() == "showpage\n");
+		REQUIRE(gsave() == "gsave\n");
+		REQUIRE(grestore() == "grestore\n");
+		REQUIRE(center() == to_string(CenterX) + " " + to_string(CenterY) + " moveto\n");
 	}
 	SECTION("Compound commands") {
 		REQUIRE(header() + moveto(30, 50) + rlineto(90, 90) + stroke() + showpage() == "%!\n\n30 50 moveto\n90 90 rlineto\nstroke\nshowpage\n");

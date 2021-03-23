@@ -29,7 +29,7 @@ enum RotationAngle {NONE = 0,
 //Takes a shape and a rotation angle, which is either 90, 180 or 270 degrees.
 class RotatedShape : public Shape {
 public:
-    RotatedShape(shape_ptr shape, const RotationAngle &rotationAngle);
+    RotatedShape(shape_ptr shape, const RotationAngle& rotationAngle);
     void doPostScript(std::ostream& os) const override;
 protected:
     shape_ptr _shape;
@@ -51,7 +51,7 @@ protected:
 class ComplexShape {
 public:
     virtual ~ComplexShape() = default;
-    shape_ptr getShapes() const;
+    //shape_ptr getShapes() const;
     void doPostScript(std::ostream& os) const; 
 protected:
     std::vector<shape_ptr> _shapes;

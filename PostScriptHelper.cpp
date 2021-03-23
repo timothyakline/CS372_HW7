@@ -34,6 +34,10 @@ string rotate(int angle) {
 	return to_string(angle) + " rotate\n";
 }
 
+string translate(int x, int y) {
+	return "translate " + to_string(x) + " " + to_string(y);
+}
+
 string newpath() {
 	return "newpath\n";
 }

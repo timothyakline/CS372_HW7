@@ -28,6 +28,7 @@ string lineto(int x, int y);
 string rlineto(int x, int y);
 string arc(int x, int y, int r, int s, int f);
 string rotate(int angle);
+string translate(int x, int y);
 string newpath();
 string stroke();
 string showpage();
