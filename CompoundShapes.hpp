@@ -1,6 +1,7 @@
 // FNAM: CompoundShapes.hpp
 // DESC: Compound shape classes
 // AUTH: Timothy Albert Kline
+//       Riley Maranville
 //       {ADD YOUR NAMES HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
@@ -29,8 +30,10 @@ enum RotationAngle {NONE = 0,
 class RotatedShape : public Shape {
 public:
     RotatedShape(shape_ptr shape, const RotationAngle &rotationAngle);
+    void doPostScript(std::ostream& os) const override;
 protected:
     shape_ptr _shape;
+    RotationAngle _rotation;
 };
 
 //Takes a shape, a horizontal scaling factor `fx`, and a vertical scaling factor `fy`.
@@ -39,6 +42,7 @@ protected:
 class ScaledShape : public Shape {
 public:
     ScaledShape(shape_ptr shape, double fx, double fy);
+    void doPostScript(std::ostream& os) const override;
 protected:
     shape_ptr _shape;
 };
@@ -48,6 +52,7 @@ class ComplexShape {
 public:
     virtual ~ComplexShape() = default;
     shape_ptr getShapes() const;
+    void doPostScript(std::ostream& os) const; 
 protected:
     std::vector<shape_ptr> _shapes;
 };
@@ -68,6 +73,8 @@ public:
         LayeredShape oneLayer(shape);
         LayeredShape otherLayers(theOtherShapes...);
     }
+
+    void doPostScript(std::ostream& os) const override;
 };
 
 
@@ -84,6 +91,8 @@ public:
         VerticalShape oneShape(shape);
         VerticalShape nextShapes(theOtherShapes...);
     }
+
+    void doPostScript(std::ostream& os) const override;
 };
 
 
@@ -100,6 +109,8 @@ public:
         HorizontalShape oneShape(shape);
         HorizontalShape nextShapes(theOtherShapes...);
     }
+
+    void doPostScript(std::ostream& os) const override;
 };
 
 #endif // !COMPOUNDSHAPES_HPP

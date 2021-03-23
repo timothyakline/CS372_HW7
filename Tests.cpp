@@ -13,7 +13,6 @@
 #include "BasicShapes.hpp"
 #include "CompoundShapes.hpp"
 using std::make_unique;
-#include "PostScriptHelper.hpp"
 
 const auto RADIUS_DBL = 7.0;
 const auto RADIUS_INT = 7;
@@ -101,17 +100,17 @@ TEST_CASE("Post script helper functinos") {
 		int x = 90;
 		int y = 50;
 		int angle = 45;
-		REQUIRE(moveTo(x, y) == "90 50 moveto\n");
-		REQUIRE(RMoveTo(x, y) == "90 50 rmoveto\n");
-		REQUIRE(lineTo(x, y) == "90 50 lineto\n");
-		REQUIRE(RLineTo(x, y) == "90 50 rlineto\n");
+		REQUIRE(moveto(x, y) == "90 50 moveto\n");
+		REQUIRE(rmoveto(x, y) == "90 50 rmoveto\n");
+		REQUIRE(lineto(x, y) == "90 50 lineto\n");
+		REQUIRE(rlineto(x, y) == "90 50 rlineto\n");
 		REQUIRE(rotate(angle) == "45 rotate\n");
 		REQUIRE(stroke() == "stroke\n");
 		REQUIRE(header() == "%!\n\n");
 		REQUIRE(showpage() == "showpage\n");
 	}
 	SECTION("Compound commands") {
-		REQUIRE(header() + moveTo(30, 50) + RLineTo(90, 90) + stroke() + showpage() == "%!\n\n30 50 moveto\n90 90 rlineto\nstroke\nshowpage\n");
+		REQUIRE(header() + moveto(30, 50) + rlineto(90, 90) + stroke() + showpage() == "%!\n\n30 50 moveto\n90 90 rlineto\nstroke\nshowpage\n");
 	}
 }
 TEST_CASE("Check helper functions visually with a postscript editor"){

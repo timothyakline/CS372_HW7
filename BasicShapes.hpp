@@ -2,6 +2,7 @@
 // DESC: Basic shape classes
 // AUTH: Timothy Albert Kline
 //		 Jacob Jakiemiec
+//       Riley Maranville
 //       {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
@@ -18,6 +19,7 @@
 class Circle : public Shape {
 public:
     Circle(double radius=0.0);
+    void doPostScript(std::ostream& os) const override;
 protected:
     double _radius;
 };
@@ -27,7 +29,7 @@ protected:
 class Polygon : public Shape {
 public:
     using Length_Type = double;
-
+    void doPostScript(std::ostream& os) const override;
 public:
     Polygon(int numSides=3, Length_Type sideLength=0.0);
 protected:
@@ -42,24 +44,28 @@ protected:
 class Rectangle : public Shape {
 public:
     Rectangle(Width_Type width=0.0, Height_Type height=0.0);
+    void doPostScript(std::ostream& os) const override;
 };
 
 //Like a rectangle, but without drawn borders. A spacer is not visible on the page.
 class Spacer : public Shape {
 public:
     Spacer(Width_Type width=0.0, Height_Type height=0.0);
+    void doPostScript(std::ostream& os) const override;
 };
 
 //Equivalent to Polygon(3,  sideLength).
 class Square : public Polygon {
 public:
     Square(Length_Type sideLength=0.0);
+    void doPostScript(std::ostream& os) const override;
 };
 
 //Equivalant to Polygon(4, sideLength).
 class Triangle : public Polygon {
 public:
     Triangle(Length_Type sideLength=0.0);
+    void doPostScript(std::ostream& os) const override;
 };
 
 #endif // !BASICSHAPES_HPP

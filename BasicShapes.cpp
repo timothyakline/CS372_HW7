@@ -2,6 +2,7 @@
 // DESC: Basic shape class functions
 // AUTH: Timothy Albert Kline
 //		 Jacob Jakiemiec
+//		 Riley Maranville
 //       {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
@@ -19,6 +20,12 @@ Circle::Circle(double radius)
 	_height = radius * 2;
 	_width = radius * 2;
 	*/
+}
+
+void Circle::doPostScript(std::ostream& os) const {
+	int x = CenterX + _radius / 2;
+	int y = CenterY + _radius / 2;
+	os << gsave << newpath << x << " " << y << " " << _radius << " 0 360 " << arc << stroke << grestore;
 }
 
 Polygon::Polygon(int numSides, Length_Type sideLength): _numSides(numSides), _sideLength(sideLength){
@@ -40,6 +47,11 @@ void Polygon::setHeightAndWidth() {
 	}
 }
 
+void Polygon::doPostScript(std::ostream& os) const {
+	int _angle = 180 - ( ( (_numSides-2) * 180) / _numSides);
+	os << gsave << "1 1" << _numSides << " { " << _sideLength << " 0 " << rlineto << " " << _angle << " " << rotate << " }  for " << stroke << grestore;
+}
+
 //FIX?
 //I forgot how to use initializer lists for the base class member variables, so rectangle and spacer just have those member variable initializations inside the function
 //Tim: I found this - https://www.learncpp.com/cpp-tutorial/constructors-and-initialization-of-derived-classes/
@@ -50,6 +62,10 @@ Rectangle::Rectangle(Width_Type width, Height_Type height)
 	_width = width;
 	_height = height;
 	*/
+}
+
+void Rectangle::doPostScript(std::ostream& os) const {
+	os << "0 " << getHeight() << " " << rlineto << " " << getWidth() << " 0 " << rlineto << " 0 -" << getHeight() << " " << rlineto << " -" << getWidth() << " 0 " << rlineto << " stroke " << stroke;
 }
 
 Spacer::Spacer(Width_Type width, Height_Type height)
@@ -63,4 +79,14 @@ Spacer::Spacer(Width_Type width, Height_Type height)
 
 Square::Square(Length_Type sideLength): Polygon(4, sideLength){}
 
+void Square::doPostScript(std::ostream& os) const {
+	Polygon _poly(_sideLength, 4);
+	_poly.doPostScript(os);
+}
+
 Triangle::Triangle(Length_Type sideLength) : Polygon(3, sideLength) {}
+
+void Triangle::doPostScript(std::ostream& os) const {
+	Polygon _poly(_sideLength, 3);
+	_poly.doPostScript(os);
+}

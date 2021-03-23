@@ -10,19 +10,19 @@
 
 #include "PostScriptHelper.hpp"
 
-string moveTo( int x, int y) {
+string moveto( int x, int y) {
 	return to_string(x) + " " + to_string(y) + " moveto\n";
 }
 
-string RMoveTo(int x, int y) {
+string rmoveto(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " rmoveto\n";
 }
 
-string lineTo(int x, int y) {
+string lineto(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " lineto\n";
 }
 
-string RLineTo(int x, int y) {
+string rlineto(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " rlineto\n";
 }
 
@@ -48,4 +48,16 @@ string header() {
 
 string showpage() {
 	return "showpage\n";
+}
+
+string gsave() {
+	return "gsave\n";
+}
+
+string grestore() {
+	return "grestore\n";
+}
+
+string center() {;
+	return moveto(CenterX, CenterY);
 }

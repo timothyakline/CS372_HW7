@@ -2,7 +2,8 @@
 // DESC: A Shape factory base class
 // AUTH: Timothy Albert Kline
 //		 Jacob Jakiemiec
-//       {ADD YOUR NAMES HERE}
+//		 Riley Maranville
+//       {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
@@ -12,6 +13,7 @@
 #define SHAPE_HPP
 
 #include <math.h>
+#include "PostScriptHelper.hpp"
 
 using Width_Type = double;
 using Height_Type = double;
@@ -22,6 +24,7 @@ public:
     virtual ~Shape() = default;
 	Height_Type getHeight() const;
 	Width_Type getWidth() const;
+	virtual void doPostScript(std::ostream& os) const = 0;
 
 protected:
 	Width_Type _width;
