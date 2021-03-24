@@ -44,7 +44,7 @@ void ScaledShape::doPostScript(std::ostream &os) const {
   os << " " << grestore();
 }
 
-void ComplexShape::doPostScript(std::ostream &os) const {}
+//void ComplexShape::doPostScript(std::ostream &os) const {}
 
 /*
 LayeredShape::LayeredShape(shape_ptr shapes...) {

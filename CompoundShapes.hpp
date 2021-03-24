@@ -57,7 +57,7 @@ public:
     {}
     virtual ~ComplexShape() = default;
     shape_ptr getShapes() const;
-    void doPostScript(std::ostream& os) const; 
+    //void doPostScript(std::ostream& os) const override; 
 protected:
     std::vector<Shape> _shapes;
 };
