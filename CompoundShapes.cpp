@@ -88,29 +88,44 @@ VerticalShape::VerticalShape(shape_ptr shape) {
 
 
 void VerticalShape::doPostScript(std::ostream &os) const {
-  os << gsave();
-  _shapes[0],doPostScript(os);
+  //os << gsave();
+  _shapes[0].doPostScript(os);
 
   for (int i = 1; i <= _shapes.size(); ++i) {
     Height_Type offset = (_shapes[i-1].getHeight()/2) + (_shapes[i].getHeight()/2);
     os << rmoveto(0,offset);
-    _shapes[i - 1].doPostScript(os);
+    _shapes[i].doPostScript(os);
   }
-  
-  os << grestore();
+  os << rmoveto(0, _shapes.back().getHeight()/2) << rmoveto(0, _height/(-2));
+  //os << grestore();
 }
 
+HorizontalShape::HorizontalShape(std::vector<Shape> shapes)
+    :ComplexShape{ shapes }
+{
+    for( auto s : shapes )
+    {
+        _height = std::max(_height, s.getHeight());
+        _width = _width + s.getWidth();
+    }
+}
+
+/*
 HorizontalShape::HorizontalShape(shape_ptr shape) {
   _height = std::max(_height, shape->getHeight());
   _width = _width + shape->getWidth();
   _shapes.push_back(move(shape));
-}
+}*/
 
 void HorizontalShape::doPostScript(std::ostream &os) const {
+  //os << gsave();
+  _shapes[0].doPostScript(os);
+
   for (int i = 1; i <= _shapes.size(); ++i) {
-    os << gsave << _shapes[i - 1]->getWidth() * i << " 0 "
-       << translate(CenterX, CenterY);
-    _shapes[i - 1]->doPostScript(os);
-    os << " grestore ";
+    Width_Type offset = (_shapes[i-1].getWidth()/2) + (_shapes[i].getWidth()/2);
+    os << rmoveto(offset,0);
+    _shapes[i].doPostScript(os);
   }
+  os << rmoveto(_shapes.back().getWidth()/2, 0) << rmoveto(_width/(-2), 0);
+  //os << grestore();
 }
