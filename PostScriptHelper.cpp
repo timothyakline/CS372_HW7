@@ -27,9 +27,10 @@ string rlineto(int x, int y) {
 	return to_string(x) + " " + to_string(y) + " rlineto\n";
 }
 
-string arc(int x, int y, int r, int s, int f){
-	return to_string(x) + " " + to_string(y) + " " + to_string(r) + " " + to_string(s) + " " + to_string(f) + " arc\n";
+string arc( int r, int s, int f){
+    return to_string(r) + " " + to_string(s) + " " + to_string(f) + " arc\n";
 }
+
 //angle is clockwise
 string rotate(int angle) {
 	return to_string(angle) + " rotate\n";
