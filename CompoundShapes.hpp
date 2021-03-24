@@ -2,11 +2,12 @@
 // DESC: Compound shape classes
 // AUTH: Timothy Albert Kline
 //       Riley Maranville
-//       {ADD YOUR NAMES HERE}
+//       Cody Abad
+//       Jacob Jakiemiec
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: N/A
+// UPDT: 23 March 2021
 // VERS: 1.0
 #ifndef COMPOUNDSHAPES_HPP
 #define COMPOUNDSHAPES_HPP
@@ -16,125 +17,112 @@
 
 #include "Shape.hpp"
 
-using shape_ptr = std::unique_ptr<Shape>;
+using Shape_Ptr = std::unique_ptr<Shape>;
 
-//TIM: Kinda iffy on the enum...
-enum RotationAngle {NONE = 0,
-                    QUARTER = 90,
-                    HALF = 180,
-                    THREE_QUARTERS = 270,
-                    TAU = 360 //not needed, but why not >:D
-                    };
+enum RotationAngle {
+  NONE = 0,
+  QUARTER = 90,
+  HALF = 180,
+  THREE_QUARTERS = 270,
+  // TAU = 360
+};
 
-//Takes a shape and a rotation angle, which is either 90, 180 or 270 degrees.
+// Takes a shape and a rotation angle, which is either 90, 180 or 270 degrees.
 class RotatedShape : public Shape {
 public:
-    RotatedShape(shape_ptr shape, const RotationAngle& rotationAngle);
-    void doPostScript(std::ostream& os) const override;
+  RotatedShape(Shape_Ptr shape, const RotationAngle &rotationAngle = NONE);
+  void doPostScript(std::ostream &os) const override;
+
 protected:
-    shape_ptr _shape;
-    RotationAngle _rotation;
+  Shape_Ptr _shape;
+  RotationAngle _rotation;
 };
 
-//Takes a shape, a horizontal scaling factor `fx`, and a vertical scaling factor `fy`.
-//Creates a version of the shape that is scaled horizontally
-//and vertically by the given scaling factors.
+// Takes a shape, a horizontal scaling factor `fx`, and a vertical scaling
+// factor `fy`. Creates a version of the shape that is scaled horizontally and
+// vertically by the given scaling factors.
 class ScaledShape : public Shape {
 public:
-    ScaledShape(shape_ptr shape, double fx, double fy);
-    void doPostScript(std::ostream& os) const override;
+  ScaledShape(Shape_Ptr shape, const double &fx, const double &fy);
+  void doPostScript(std::ostream &os) const override;
+
 protected:
-    shape_ptr _shape;
-    Width_Type _fx;
-    Height_Type _fy;
+  Shape_Ptr _shape;
+  Width_Type _fx;
+  Height_Type _fy;
 };
 
-//Tim: Make into an interface instead?
-class ComplexShape {
+using Shape_Container_Type = std::vector<Shape_Ptr>;
+
+// Given a collection of shapes,
+// creates a new shape consisting of all the shapes drawn with their bounding
+// boxes centered around the current point. The height and width of a layered
+// shape is the maximum of the heights and widths of the component shapes.
+class LayeredShape : public Shape {
 public:
-    ComplexShape(std::vector<Shape> shapes)
-        :_shapes(shapes)
-    {}
-    virtual ~ComplexShape() = default;
-    shape_ptr getShapes() const;
-    //void doPostScript(std::ostream& os) const override; 
+  // https://stackoverflow.com/questions/33747131/variadic-construction-for-initialising-vector-of-unique-ptr-to-base-type
+  //[PRECOND] `SHAPE_TYPE` must be a unique_ptr<Shape>
+  template <typename... SHAPE_TYPE>
+  LayeredShape(SHAPE_TYPE &&...shapes) : Shape{} {
+    Shape_Ptr shapeArray[] = {(std::move(shapes))...};
+    _shapes =
+        Shape_Container_Type{std::make_move_iterator(std::begin(shapeArray)),
+                             std::make_move_iterator(std::end(shapeArray))};
+
+    for (const auto &s : _shapes) {
+      _height = std::max(_height, s->getHeight());
+      _width = std::max(_width, s->getWidth());
+    }
+  }
+
+  void doPostScript(std::ostream &os) const override;
+
 protected:
-    std::vector<Shape> _shapes;
+  Shape_Container_Type _shapes{};
 };
 
-//Given a collection of shapes,
-//creates a new shape consisting of all the shapes drawn with their bounding boxes centered around the current point.
-//The height and width of a layered shape is the maximum of the heights and widths of the component shapes.
-class LayeredShape : public Shape, public ComplexShape {
+class VerticalShape : public Shape {
 public:
-    //[PRECOND] S has to be a Shape class or derived from Shape.
-    template<typename S>
-    LayeredShape(std::vector<S> shapes)
-        :ComplexShape{ shapes }
-{
-    for( auto s : shapes )
-    {
-        _height = std::max(_height, s.getHeight());
-        _width = std::max(_width, s.getWidth());
+  //[PRECOND] `SHAPE_TYPE` must be a unique_ptr<Shape>
+  template <typename... SHAPE_TYPE>
+  VerticalShape(SHAPE_TYPE &&...shapes) : Shape{} {
+    Shape_Ptr shapeArray[] = {(std::move(shapes))...};
+    _shapes =
+        Shape_Container_Type{std::make_move_iterator(std::begin(shapeArray)),
+                             std::make_move_iterator(std::end(shapeArray))};
+
+    for (const auto &s : _shapes) {
+      _height = _height + s->getHeight();
+      _width = std::max(_width, s->getWidth());
     }
-}
-    
-    /*
-    //BASE CASE
-    LayeredShape(shape_ptr shape...);
-    
-    
-    //RECURSIVE CASE
-    //[PRECOND] `ARGS` must be a `Shape` class type
-    template<class ...ARGS>
-    LayeredShape(shape_ptr shape, const ARGS &...theOtherShapes)
-        :
-    {
-        LayeredShape oneLayer(shape);
-        LayeredShape otherLayers(theOtherShapes...);
+  }
+
+  void doPostScript(std::ostream &os) const override;
+
+protected:
+  Shape_Container_Type _shapes{};
+};
+
+class HorizontalShape : public Shape {
+public:
+  //[PRECOND] `SHAPE_TYPE` must be a unique_ptr<Shape>
+  template <typename... SHAPE_TYPE>
+  HorizontalShape(SHAPE_TYPE &&...shapes) : Shape{} {
+    Shape_Ptr shapeArray[] = {(std::move(shapes))...};
+    _shapes =
+        Shape_Container_Type{std::make_move_iterator(std::begin(shapeArray)),
+                             std::make_move_iterator(std::end(shapeArray))};
+
+    for (const auto &s : _shapes) {
+      _height = std::max(_height, s->getHeight());
+      _width = _width + s->getWidth();
     }
-    */
-    void doPostScript(std::ostream& os) const override;
-};
+  }
 
+  void doPostScript(std::ostream &os) const override;
 
-class VerticalShape : public Shape, public ComplexShape {
-public:
-    VerticalShape(std::vector<Shape> shapes);
-    /*
-    //BASE CASE
-    VerticalShape(shape_ptr shape);
-    
-    //RECURSIVE CASE
-    //[PRECOND] `ARGS` must be a `Shape` class type
-    template<class ...ARGS>
-    VerticalShape(shape_ptr shape, const ARGS &...theOtherShapes)
-    {
-        VerticalShape oneShape(shape);
-        VerticalShape nextShapes(theOtherShapes...);
-    }*/
-
-    void doPostScript(std::ostream& os) const override;
-};
-
-
-class HorizontalShape : public Shape, public ComplexShape {
-public:
-    HorizontalShape(std::vector<Shape> shapes);
-    /*
-    //BASE CASE
-    HorizontalShape(shape_ptr shape);
-    
-    //RECURSIVE CASE
-    //[PRECOND] `ARGS` must be a `Shape` class type
-    template<class ...ARGS>
-    HorizontalShape(shape_ptr shape, const ARGS &...theOtherShapes)
-    {
-        HorizontalShape oneShape(shape);
-        HorizontalShape nextShapes(theOtherShapes...);
-    }*/
-
-    void doPostScript(std::ostream& os) const override;
+protected:
+  Shape_Container_Type _shapes{};
 };
 
 #endif // !COMPOUNDSHAPES_HPP

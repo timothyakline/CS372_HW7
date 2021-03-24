@@ -30,6 +30,7 @@ string rlineto(int x, int y);
 string arc(int r, int s, int f);
 string rotate(int angle);
 string translate(int x, int y);
+string scale(double fx, double fy);
 string newpath();
 string stroke();
 string showpage();
@@ -38,5 +39,6 @@ string gsave();
 string grestore();
 string center();
 string currentpoint();
+string closepath();
 
 #endif

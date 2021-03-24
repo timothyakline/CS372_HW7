@@ -16,14 +16,17 @@
 
 #include <fstream>
 using std::fstream;
+using std::unique_ptr;
+//using std::shared_ptr;
 using std::make_unique;
+//using std::make_shared;
 
 const auto RADIUS_DBL = 7.0;
 const auto RADIUS_INT = 7;
 const auto TEST_SIDES = 5;
-const auto TEST_LENGTH = 4.5;
-const auto TEST_WIDTH = 3.7;
-const auto TEST_HEIGHT = 8.5;
+const auto TEST_LENGTH = 24.5;
+const auto TEST_WIDTH = 13.7;
+const auto TEST_HEIGHT = 28.5;
 const auto PI = 3.14159274101257324219;
 
 TEST_CASE("Shape base class construction", "[baseclass]")
@@ -85,29 +88,21 @@ TEST_CASE("Basic shapes inheritance", "[baseclass][basic]")
 			REQUIRE ( sizedDblCircle.getWidth() == RADIUS_DBL * 2);
 		}
 	}
-
-	SECTION("Polygon") {
-		SECTION("Defined Base class init") {
-
-		}
-	}
 }
 
 TEST_CASE("Complex shape inheritance", "[baseclass][complex]")
 {
 	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
-	RotatedShape rotateTriangle(move(tri1), QUARTER);
+	RotatedShape rotateTriangle(std::move(tri1), QUARTER);
+	
+	auto tri = make_unique<Triangle>(4);
+	auto rect = make_unique<Rectangle>(3);
+	auto cir = make_unique<Circle>(3.3);
 
-	Triangle tri(4);
-	Rectangle rect(3);
-	Circle cir(3.3);
-	std::vector<Shape> shapes { tri, rect, cir };
-
-	LayeredShape triRectCir(shapes);
-
+	//LayeredShape triRectCir(tri, rect, cir);
 }
 
-TEST_CASE("Post script helper functinos") {
+TEST_CASE("Post script helper functions") {
 	SECTION("Basic commands") {
 		int x = 90;
 		int y = 50;
@@ -133,19 +128,43 @@ TEST_CASE("Post script helper functinos") {
 
 TEST_CASE("Check doPostScript functions") {
 	ofstream fs;
-	fs.open("yoot.ps");
-	fs << "500 500 moveto\n";
+	fs.open("test.ps");
+	fs << moveto(500,500);
 	//Rectangle yeet(50, 10);
 	//yeet.doPostScript(fs);
 
 
-	Triangle tri(40);
-	Rectangle rect(30);
-	Circle cir(10.3);
-	std::vector<Shape> shapes { tri, rect, cir };
+	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
+	auto rect1 = make_unique<Rectangle>(TEST_WIDTH, TEST_HEIGHT);
+	auto cir1 = make_unique<Circle>(RADIUS_DBL);
+	auto penta = make_unique<Polygon>(5, 35.7);
+	auto nona = make_unique<Polygon>(9,57.2);
+	auto rotatedTri = make_unique<RotatedShape>(std::unique_ptr<Triangle>(new Triangle(TEST_LENGTH)), QUARTER);
+	auto scaledHexa = make_unique<ScaledShape>(std::unique_ptr<Polygon>(new Polygon(6, TEST_LENGTH)), 0.5, 2.0);
+	
+	tri1->doPostScript(fs);
+	fs << moveto(400, 400);
+	rotatedTri->doPostScript(fs);
+	fs << moveto(300, 300);
+	rect1->doPostScript(fs);
+	fs << moveto(300, 400);
+	cir1->doPostScript(fs);
+	fs << moveto(400, 500);
+	penta->doPostScript(fs);
+	fs << moveto(400, 300);
+	nona->doPostScript(fs);
+	fs << moveto(300, 500);
+	scaledHexa->doPostScript(fs);
+	fs << moveto(200, 500);
 
-	LayeredShape triRectCir(shapes);
+	LayeredShape triRectCir(move(tri1), move(rect1), move(cir1));
 	triRectCir.doPostScript(fs);
+	fs << moveto(100, 500);
+	HorizontalShape rotTriScalHexa(move(rotatedTri), move(scaledHexa));
+	rotTriScalHexa.doPostScript(fs);
+	fs << moveto(100, 300);
+	VerticalShape nonaPentaDeca (move(nona), move(penta), std::unique_ptr<Polygon>(new Polygon(12, 46.2)));
+	nonaPentaDeca.doPostScript(fs);
 	fs << showpage();
 	fs.close();
 	//REQUIRE(fs == "help");
