@@ -1,6 +1,7 @@
 // FNAM: PostScriptHelper.cpp
 // DESC: C++ to PostScript functions
 // AUTH: Jacob Jakiemiec
+//       Cody Abad
 //		 {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman

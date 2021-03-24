@@ -2,6 +2,7 @@
 // DESC: C++ to PostScript functions
 // AUTH: Jacob Jakiemiec
 //		 Riley Maranville
+//       Cody Abad
 //		 {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman

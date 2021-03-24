@@ -47,7 +47,7 @@ void Polygon::setHeightAndWidth() {
 
 void Polygon::doPostScript(std::ostream& os) const {
 	int _angle = 180 - ( ( (_numSides-2) * 180) / _numSides);
-	os << gsave << "1 1" << _numSides << " { " << _sideLength << " 0 " << rlineto << " " << _angle << " " << rotate << " }  for " << stroke << grestore;
+	os << gsave() << "1 1" << _numSides << " { " << _sideLength << " 0 " << rlineto << " " << _angle << " " << rotate << " }  for " << stroke << grestore;
 }
 
 //FIX?

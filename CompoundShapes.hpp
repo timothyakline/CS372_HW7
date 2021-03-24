@@ -51,7 +51,7 @@ protected:
 class ComplexShape {
 public:
     virtual ~ComplexShape() = default;
-    //shape_ptr getShapes() const;
+    shape_ptr getShapes() const;
     void doPostScript(std::ostream& os) const; 
 protected:
     std::vector<shape_ptr> _shapes;

@@ -51,6 +51,7 @@ shape_ptr ComplexShape::getShapes() const {
     //Use a coroutine?
     //Include in C++ to PostScript files instead?
 }
+
 */
 
 void ComplexShape::doPostScript(std::ostream& os) const {
@@ -71,8 +72,8 @@ void LayeredShape::doPostScript(std::ostream& os) const {
 
 VerticalShape::VerticalShape(shape_ptr shape)
 {
-    _height = std::max(_height, shape->getHeight());
-    _width = _width + shape->getWidth();
+    _height = _height + shape->getHeight();
+    _width = std::max(_width, shape->getWidth());
     _shapes.push_back(move(shape));
 }
 
@@ -86,9 +87,10 @@ void VerticalShape::doPostScript(std::ostream& os) const {
 
 HorizontalShape::HorizontalShape(shape_ptr shape)
 {
-    _height = _height + shape->getHeight();
-    _width = std::max(_width, shape->getWidth());
+    _height = std::max(_height, shape->getHeight());
+    _width = _width + shape->getWidth();
     _shapes.push_back(move(shape));
+
 }
 
 void HorizontalShape::doPostScript(std::ostream& os) const {
