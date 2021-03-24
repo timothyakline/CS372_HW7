@@ -67,7 +67,17 @@ protected:
 //The height and width of a layered shape is the maximum of the heights and widths of the component shapes.
 class LayeredShape : public Shape, public ComplexShape {
 public:
-    LayeredShape(std::vector<Shape> shapes);
+    //[PRECOND] S has to be a Shape class or derived from Shape.
+    template<typename S>
+    LayeredShape(std::vector<S> shapes)
+        :ComplexShape{ shapes }
+{
+    for( auto s : shapes )
+    {
+        _height = std::max(_height, s.getHeight());
+        _width = std::max(_width, s.getWidth());
+    }
+}
     
     /*
     //BASE CASE

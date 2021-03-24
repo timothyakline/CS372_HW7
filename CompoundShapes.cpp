@@ -52,8 +52,9 @@ LayeredShape::LayeredShape(shape_ptr shapes...) {
   _width = std::max(_width, shape->getWidth());
   _shapes.push_back(move(shape));
 }*/
-
-LayeredShape::LayeredShape(std::vector<Shape> shapes)
+/*
+template<class S>
+LayeredShape::LayeredShape(std::vector<S> shapes)
     :ComplexShape{ shapes }
 {
     for( auto s : shapes )
@@ -61,7 +62,7 @@ LayeredShape::LayeredShape(std::vector<Shape> shapes)
         _height = std::max(_height, s.getHeight());
         _width = std::max(_width, s.getWidth());
     }
-}
+}*/
 
 void LayeredShape::doPostScript(std::ostream &os) const {
   os << gsave();
