@@ -37,5 +37,6 @@ string header();
 string gsave();
 string grestore();
 string center();
+string currentpoint();
 
 #endif

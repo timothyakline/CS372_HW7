@@ -63,6 +63,10 @@ string grestore() {
 	return "grestore\n";
 }
 
-string center() {;
+string center() {
 	return moveto(CenterX, CenterY);
+}
+
+string currentpoint() {
+	return "currentpoint\n";
 }
