@@ -8,95 +8,124 @@
 // STRT: 07 March 2021
 // UPDT: 22 March 2021
 // VERS: 1.0
-#include <algorithm>
 #include "CompoundShapes.hpp"
+#include <algorithm>
 
-RotatedShape::RotatedShape(shape_ptr shape, const RotationAngle& rotationAngle) 
-    :_shape(move(shape)), _rotation(rotationAngle) 
-{
-    switch(rotationAngle)
-    {
-    case QUARTER:
-    case THREE_QUARTERS:
-        std::swap(_height,_width);
-        break;
-    default:
-        break;
-    }
+
+RotatedShape::RotatedShape(shape_ptr shape, const RotationAngle &rotationAngle)
+    : Shape{shape->getWidth(), shape->getHeight()}, _shape(move(shape)),
+      _rotation(rotationAngle) {
+  switch (rotationAngle) {
+  case QUARTER:
+  case THREE_QUARTERS:
+    std::swap(_height, _width);
+    break;
+  default:
+    break;
+  }
 }
 
-void RotatedShape::doPostScript(std::ostream& os) const {
-    os << gsave << _rotation << " " << rotate;
-    _shape->doPostScript(os);
-    os << grestore;
+void RotatedShape::doPostScript(std::ostream &os) const {
+  os << gsave() << rotate(_rotation);
+  _shape->doPostScript(os);
+  os << grestore();
 }
 
 ScaledShape::ScaledShape(shape_ptr shape, double fx, double fy)
-    :_shape(move(shape))
-{
-    _width = _width * fx;
-    _height = _height * fy;
+    : Shape{ shape->getWidth(), shape->getHeight() }, _shape(move(shape))
+    ,_fx(fx), _fy(fy) {
+  _width = _width * fx;
+  _height = _height * fy;
 }
 
-void ScaledShape::doPostScript(std::ostream& os) const {
-    os << gsave << _width << " " << _height << " scale ";
-    _shape->doPostScript(os);
-    os << " " << grestore;
+void ScaledShape::doPostScript(std::ostream &os) const {
+  os << gsave() << _width << " " << _height << " scale ";
+  _shape->doPostScript(os);
+  os << " " << grestore();
+}
+
+//void ComplexShape::doPostScript(std::ostream &os) const {}
+
+/*
+LayeredShape::LayeredShape(shape_ptr shapes...) {
+  _height = std::max(_height, shape->getHeight());
+  _width = std::max(_width, shape->getWidth());
+  _shapes.push_back(move(shape));
+}*/
+
+LayeredShape::LayeredShape(std::vector<Shape> shapes)
+    :ComplexShape{ shapes }
+{
+    for( auto s : shapes )
+    {
+        _height = std::max(_height, s.getHeight());
+        _width = std::max(_width, s.getWidth());
+    }
+}
+
+void LayeredShape::doPostScript(std::ostream &os) const {
+  os << gsave();
+  for (auto s : _shapes) s.doPostScript(os);
+  os << grestore();
+}
+
+VerticalShape::VerticalShape(std::vector<Shape> shapes)
+    :ComplexShape{ shapes }
+{
+    for( auto s : shapes )
+    {
+        _height = _height + s.getHeight();
+        _width = std::max(_width, s.getWidth());
+    }
 }
 
 /*
-shape_ptr ComplexShape::getShapes() const {
-    //[WRITE ME]
-    //ITERATE THROUGH _shapes TO GET SHAPES
-    //Use a coroutine?
-    //Include in C++ to PostScript files instead?
+VerticalShape::VerticalShape(shape_ptr shape) {
+  _height = _height + shape->getHeight();
+  _width = std::max(_width, shape->getWidth());
+  _shapes.push_back(move(shape));
+}*/
+
+
+void VerticalShape::doPostScript(std::ostream &os) const {
+  //os << gsave();
+  _shapes[0].doPostScript(os);
+
+  for (int i = 1; i <= _shapes.size(); ++i) {
+    Height_Type offset = (_shapes[i-1].getHeight()/2) + (_shapes[i].getHeight()/2);
+    os << rmoveto(0,offset);
+    _shapes[i].doPostScript(os);
+  }
+  os << rmoveto(0, _shapes.back().getHeight()/2) << rmoveto(0, _height/(-2));
+  //os << grestore();
 }
 
-*/
-
-void ComplexShape::doPostScript(std::ostream& os) const {
-
-}
-
-LayeredShape::LayeredShape(shape_ptr shape)
+HorizontalShape::HorizontalShape(std::vector<Shape> shapes)
+    :ComplexShape{ shapes }
 {
-    _height = std::max(_height, shape->getHeight());
-    _width = std::max(_width, shape->getWidth());
-    _shapes.push_back(move(shape));
-}
-
-void LayeredShape::doPostScript(std::ostream& os) const {
-    //for (auto s : _shapes)
-      //  s->createPostScript(os);
-}
-
-VerticalShape::VerticalShape(shape_ptr shape)
-{
-    _height = _height + shape->getHeight();
-    _width = std::max(_width, shape->getWidth());
-    _shapes.push_back(move(shape));
-}
-
-void VerticalShape::doPostScript(std::ostream& os) const {
-    for (int i = 1; i <= _shapes.size(); ++i) {
-        os << gsave << " 0 " << _shapes[i - 1]->getHeight() * i << " " << translate(CenterX, CenterY);
-        _shapes[i - 1]->doPostScript(os);
-        os << " " << grestore;
+    for( auto s : shapes )
+    {
+        _height = std::max(_height, s.getHeight());
+        _width = _width + s.getWidth();
     }
 }
 
-HorizontalShape::HorizontalShape(shape_ptr shape)
-{
-    _height = std::max(_height, shape->getHeight());
-    _width = _width + shape->getWidth();
-    _shapes.push_back(move(shape));
+/*
+HorizontalShape::HorizontalShape(shape_ptr shape) {
+  _height = std::max(_height, shape->getHeight());
+  _width = _width + shape->getWidth();
+  _shapes.push_back(move(shape));
+}*/
 
-}
+void HorizontalShape::doPostScript(std::ostream &os) const {
+  //os << gsave();
+  _shapes[0].doPostScript(os);
 
-void HorizontalShape::doPostScript(std::ostream& os) const {
-    for (int i = 1; i <= _shapes.size(); ++i) {
-        os << gsave << _shapes[i - 1]->getWidth() * i << " 0 " << translate(CenterX, CenterY);
-        _shapes[i - 1]->doPostScript(os);
-        os << " grestore ";
-    }
+  for (int i = 1; i <= _shapes.size(); ++i) {
+    Width_Type offset = (_shapes[i-1].getWidth()/2) + (_shapes[i].getWidth()/2);
+    os << rmoveto(offset,0);
+    _shapes[i].doPostScript(os);
+  }
+  os << rmoveto(_shapes.back().getWidth()/2, 0) << rmoveto(_width/(-2), 0);
+  //os << grestore();
 }

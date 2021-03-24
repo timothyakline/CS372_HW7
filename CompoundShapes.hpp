@@ -45,16 +45,21 @@ public:
     void doPostScript(std::ostream& os) const override;
 protected:
     shape_ptr _shape;
+    Width_Type _fx;
+    Height_Type _fy;
 };
 
 //Tim: Make into an interface instead?
 class ComplexShape {
 public:
+    ComplexShape(std::vector<Shape> shapes)
+        :_shapes(shapes)
+    {}
     virtual ~ComplexShape() = default;
     shape_ptr getShapes() const;
-    void doPostScript(std::ostream& os) const; 
+    //void doPostScript(std::ostream& os) const override; 
 protected:
-    std::vector<shape_ptr> _shapes;
+    std::vector<Shape> _shapes;
 };
 
 //Given a collection of shapes,
@@ -62,24 +67,31 @@ protected:
 //The height and width of a layered shape is the maximum of the heights and widths of the component shapes.
 class LayeredShape : public Shape, public ComplexShape {
 public:
+    LayeredShape(std::vector<Shape> shapes);
+    
+    /*
     //BASE CASE
-    LayeredShape(shape_ptr shape);
-
+    LayeredShape(shape_ptr shape...);
+    
+    
     //RECURSIVE CASE
     //[PRECOND] `ARGS` must be a `Shape` class type
     template<class ...ARGS>
     LayeredShape(shape_ptr shape, const ARGS &...theOtherShapes)
+        :
     {
         LayeredShape oneLayer(shape);
         LayeredShape otherLayers(theOtherShapes...);
     }
-
+    */
     void doPostScript(std::ostream& os) const override;
 };
 
 
 class VerticalShape : public Shape, public ComplexShape {
 public:
+    VerticalShape(std::vector<Shape> shapes);
+    /*
     //BASE CASE
     VerticalShape(shape_ptr shape);
     
@@ -90,7 +102,7 @@ public:
     {
         VerticalShape oneShape(shape);
         VerticalShape nextShapes(theOtherShapes...);
-    }
+    }*/
 
     void doPostScript(std::ostream& os) const override;
 };
@@ -98,6 +110,8 @@ public:
 
 class HorizontalShape : public Shape, public ComplexShape {
 public:
+    HorizontalShape(std::vector<Shape> shapes);
+    /*
     //BASE CASE
     HorizontalShape(shape_ptr shape);
     
@@ -108,7 +122,7 @@ public:
     {
         HorizontalShape oneShape(shape);
         HorizontalShape nextShapes(theOtherShapes...);
-    }
+    }*/
 
     void doPostScript(std::ostream& os) const override;
 };

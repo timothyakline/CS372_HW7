@@ -97,6 +97,14 @@ TEST_CASE("Complex shape inheritance", "[baseclass][complex]")
 {
 	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
 	RotatedShape rotateTriangle(move(tri1), QUARTER);
+
+	Triangle tri(4);
+	Rectangle rect(3);
+	Circle cir(3.3);
+	std::vector<Shape> shapes { tri, rect, cir };
+
+	LayeredShape triRectCir(shapes);
+
 }
 
 TEST_CASE("Post script helper functinos") {
@@ -109,7 +117,7 @@ TEST_CASE("Post script helper functinos") {
 		REQUIRE(rmoveto(x, y) == "90 50 rmoveto\n");
 		REQUIRE(lineto(x, y) == "90 50 lineto\n");
 		REQUIRE(rlineto(x, y) == "90 50 rlineto\n");
-		REQUIRE(arc(x, y, r, angle, angle) == "90 50 5 45 45 arc\n");
+		REQUIRE(arc(r, angle, angle) == "5 45 45 arc\n");
 		REQUIRE(rotate(angle) == "45 rotate\n");
 		REQUIRE(stroke() == "stroke\n");
 		REQUIRE(header() == "%!\n\n");
@@ -124,10 +132,21 @@ TEST_CASE("Post script helper functinos") {
 }
 
 TEST_CASE("Check doPostScript functions") {
-	fstream fs("example.ps");
-	Rectangle yeet(5, 1);
-	yeet.doPostScript(fs);
-	fs << "hey";
+	ofstream fs;
+	fs.open("yoot.ps");
+	fs << "500 500 moveto\n";
+	//Rectangle yeet(50, 10);
+	//yeet.doPostScript(fs);
+
+
+	Triangle tri(40);
+	Rectangle rect(30);
+	Circle cir(10.3);
+	std::vector<Shape> shapes { tri, rect, cir };
+
+	LayeredShape triRectCir(shapes);
+	triRectCir.doPostScript(fs);
+	fs << showpage();
 	fs.close();
 	//REQUIRE(fs == "help");
 }
