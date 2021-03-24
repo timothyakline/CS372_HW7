@@ -40,6 +40,10 @@ string translate(int x, int y) {
 	return "translate " + to_string(x) + " " + to_string(y);
 }
 
+string scale(double fx, double fy) {
+	return to_string(fx) + " " + to_string(fy) + " " + "scale\n";
+}
+
 string newpath() {
 	return "newpath\n";
 }
