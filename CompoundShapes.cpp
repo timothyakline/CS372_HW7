@@ -52,7 +52,6 @@ void LayeredShape::doPostScript(std::ostream &os) const {
 }
 
 void VerticalShape::doPostScript(std::ostream &os) const {
-  // os << gsave();
   _shapes[0]->doPostScript(os);
 
   for (int i = 1; i < _shapes.size(); ++i) {
@@ -63,11 +62,9 @@ void VerticalShape::doPostScript(std::ostream &os) const {
   }
   os << rmoveto(0, _shapes.back()->getHeight() / 2)
      << rmoveto(0, _height / (-2));
-  // os << grestore();
 }
 
 void HorizontalShape::doPostScript(std::ostream &os) const {
-  // os << gsave();
   _shapes[0]->doPostScript(os);
 
   for (int i = 1; i < _shapes.size(); ++i) {
@@ -77,5 +74,4 @@ void HorizontalShape::doPostScript(std::ostream &os) const {
     _shapes[i]->doPostScript(os);
   }
   os << rmoveto(_shapes.back()->getWidth() / 2, 0) << rmoveto(_width / (-2), 0);
-  // os << grestore();
 }

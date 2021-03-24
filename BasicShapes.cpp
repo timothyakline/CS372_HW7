@@ -16,10 +16,6 @@ Circle::Circle(double radius)
     : Shape{radius * 2, radius * 2}, _radius(radius) {}
 
 void Circle::doPostScript(std::ostream &os) const {
-  // int x = CenterX + _radius / 2;
-  // int y = CenterY + _radius / 2;
-  // os << gsave << newpath << x << " " << y << " " << _radius << " 0 360 " <<
-  // arc << stroke << grestore;
   os << gsave() << currentpoint() << rmoveto(getWidth() / 2, 0)
      << arc(_radius, 0, 360) << stroke() << grestore();
 }
@@ -65,7 +61,7 @@ void Rectangle::doPostScript(std::ostream &os) const {
 Spacer::Spacer(Width_Type width, Height_Type height) : Shape{width, height} {}
 
 void Spacer::doPostScript(std::ostream &os) const {
-  // WRITE ME
+  // Not used
 }
 
 Square::Square(Length_Type sideLength) : Polygon(4, sideLength) {}

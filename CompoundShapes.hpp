@@ -24,7 +24,6 @@ enum RotationAngle {
   QUARTER = 90,
   HALF = 180,
   THREE_QUARTERS = 270,
-  // TAU = 360
 };
 
 // Takes a shape and a rotation angle, which is either 90, 180 or 270 degrees.

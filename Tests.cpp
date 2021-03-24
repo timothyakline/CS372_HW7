@@ -98,8 +98,6 @@ TEST_CASE("Complex shape inheritance", "[baseclass][complex]")
 	auto tri = make_unique<Triangle>(4);
 	auto rect = make_unique<Rectangle>(3);
 	auto cir = make_unique<Circle>(3.3);
-
-	//LayeredShape triRectCir(tri, rect, cir);
 }
 
 TEST_CASE("Post script helper functions") {
@@ -130,9 +128,6 @@ TEST_CASE("Check doPostScript functions") {
 	ofstream fs;
 	fs.open("test.ps");
 	fs << moveto(500,500);
-	//Rectangle yeet(50, 10);
-	//yeet.doPostScript(fs);
-
 
 	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
 	auto rect1 = make_unique<Rectangle>(TEST_WIDTH, TEST_HEIGHT);
@@ -167,7 +162,6 @@ TEST_CASE("Check doPostScript functions") {
 	nonaPentaDeca.doPostScript(fs);
 	fs << showpage();
 	fs.close();
-	//REQUIRE(fs == "help");
 }
 
 TEST_CASE("Check helper functions visually with a postscript editor"){
