@@ -71,3 +71,7 @@ string center() {
 string currentpoint() {
 	return "currentpoint\n";
 }
+
+string closepath() {
+	return "closepath\n";
+}

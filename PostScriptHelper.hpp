@@ -38,5 +38,6 @@ string gsave();
 string grestore();
 string center();
 string currentpoint();
+string closepath();
 
 #endif
