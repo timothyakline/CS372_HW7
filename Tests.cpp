@@ -97,6 +97,14 @@ TEST_CASE("Complex shape inheritance", "[baseclass][complex]")
 {
 	auto tri1 = make_unique<Triangle>(TEST_LENGTH);
 	RotatedShape rotateTriangle(move(tri1), QUARTER);
+
+	Triangle tri(4);
+	Rectangle rect(3);
+	Circle cir(3.3);
+	std::vector<Shape> shapes { tri, rect, cir };
+
+	LayeredShape triRectCir(shapes);
+
 }
 
 TEST_CASE("Post script helper functinos") {
