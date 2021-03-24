@@ -110,6 +110,8 @@ public:
 
 class HorizontalShape : public Shape, public ComplexShape {
 public:
+    HorizontalShape(std::vector<Shape> shapes);
+    /*
     //BASE CASE
     HorizontalShape(shape_ptr shape);
     
@@ -120,7 +122,7 @@ public:
     {
         HorizontalShape oneShape(shape);
         HorizontalShape nextShapes(theOtherShapes...);
-    }
+    }*/
 
     void doPostScript(std::ostream& os) const override;
 };
