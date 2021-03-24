@@ -21,9 +21,10 @@ Circle::Circle(double radius)
 }
 
 void Circle::doPostScript(std::ostream& os) const {
-	int x = CenterX + _radius / 2;
-	int y = CenterY + _radius / 2;
-	os << gsave << newpath << x << " " << y << " " << _radius << " 0 360 " << arc << stroke << grestore;
+	//int x = CenterX + _radius / 2;
+	//int y = CenterY + _radius / 2;
+	//os << gsave << newpath << x << " " << y << " " << _radius << " 0 360 " << arc << stroke << grestore;
+	os   << gsave() << currentpoint() << rmoveto(getWidth() / 2, 0) << arc(_radius, 0, 360) << stroke() << grestore();
 }
 
 Polygon::Polygon(int numSides, Length_Type sideLength): _numSides(numSides), _sideLength(sideLength){
@@ -47,7 +48,7 @@ void Polygon::setHeightAndWidth() {
 
 void Polygon::doPostScript(std::ostream& os) const {
 	int _angle = 180 - ( ( (_numSides-2) * 180) / _numSides);
-	os << gsave() << "1 1" << _numSides << " { " << _sideLength << " 0 " << rlineto << " " << _angle << " " << rotate << " }  for " << stroke << grestore;
+	os << gsave() << rmoveto(_sideLength / -2,getHeight()/-2) << "1 1 " << _numSides << " {\n" << rlineto(_sideLength, 0) << rotate(_angle) << "}  for\n" << stroke() << grestore();
 }
 
 //FIX?
@@ -63,7 +64,7 @@ Rectangle::Rectangle(Width_Type width, Height_Type height)
 }
 
 void Rectangle::doPostScript(std::ostream& os) const {
-	os << "0 " << getHeight() << " " << rlineto << " " << getWidth() << " 0 " << rlineto << " 0 -" << getHeight() << " " << rlineto << " -" << getWidth() << " 0 " << rlineto << " stroke " << stroke;
+	os << gsave() << rmoveto(getWidth() / -2, getHeight() / -2) <<rlineto(0, getHeight()) << rlineto(getWidth(), 0) << rlineto(0, -1*getHeight()) << rlineto(-1*getWidth(), 0) << stroke() << grestore();
 }
 
 Spacer::Spacer(Width_Type width, Height_Type height)
@@ -79,14 +80,5 @@ void Spacer::doPostScript(std::ostream& os) const {}
 
 Square::Square(Length_Type sideLength): Polygon(4, sideLength){}
 
-void Square::doPostScript(std::ostream& os) const {
-	Polygon _poly(_sideLength, 4);
-	_poly.doPostScript(os);
-}
 
 Triangle::Triangle(Length_Type sideLength) : Polygon(3, sideLength) {}
-
-void Triangle::doPostScript(std::ostream& os) const {
-	Polygon _poly(_sideLength, 3);
-	_poly.doPostScript(os);
-}

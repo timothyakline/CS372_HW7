@@ -58,14 +58,12 @@ public:
 class Square : public Polygon {
 public:
     Square(Length_Type sideLength=0.0);
-    void doPostScript(std::ostream& os) const override;
 };
 
 //Equivalant to Polygon(4, sideLength).
 class Triangle : public Polygon {
 public:
     Triangle(Length_Type sideLength=0.0);
-    void doPostScript(std::ostream& os) const override;
 };
 
 #endif // !BASICSHAPES_HPP
