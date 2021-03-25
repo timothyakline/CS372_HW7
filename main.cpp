@@ -76,20 +76,22 @@ unique_ptr<RotatedShape> makeRotated() {
 
 unique_ptr<HorizontalShape> makeHorizontal() {
 	int shapeCount(0);
-	cout << "How many shapes?" << endl;
-	cin >> shapeCount;
+
 	vector<unique_ptr<Shape>> shapes;
 	for (int i = 0; i < 3; i++) {
 		shapes.push_back(makeShape());
 	}
-
 	return make_unique<HorizontalShape>(move(shapes[0]), move(shapes[1]), move(shapes[2]));
 }
 
 unique_ptr<LayeredShape> makeLayered() {
-	auto temp = makeShape();
 	int shapeCount(0);
-	return make_unique<LayeredShape>(LayeredShape(move(temp)));
+
+	vector<unique_ptr<Shape>> shapes;
+	for (int i = 0; i < 3; i++) {
+		shapes.push_back(makeShape());
+	}
+	return make_unique<LayeredShape>(move(shapes[0]), move(shapes[1]), move(shapes[2]));
 }
 
 unique_ptr<ScaledShape> makeScaled() {
@@ -105,9 +107,20 @@ unique_ptr<ScaledShape> makeScaled() {
 }
 
 unique_ptr<VerticalShape> makeVertical() {
-	auto temp = makeShape();
 	int shapeCount(0);
-	return make_unique<VerticalShape>(VerticalShape(move(temp)));
+
+	vector<unique_ptr<Shape>> shapes;
+	for (int i = 0; i < 3; i++) {
+		shapes.push_back(makeShape());
+	}
+	return make_unique<VerticalShape>(move(shapes[0]), move(shapes[1]), move(shapes[2]));
+}
+
+unique_ptr<Cat> makeCat() {
+	double radius(0.0);
+	cout << "Enter radius";
+	cin >> radius;
+	return make_unique<Cat>(Cat(radius));
 }
 
 unique_ptr<Shape> makeShape() {
@@ -122,6 +135,7 @@ unique_ptr<Shape> makeShape() {
 	cout << "5. Layered" << endl;
 	cout << "6. Horizontal" << endl;
 	cout << "7. Vertical" << endl;
+	cout << "8. Cat" << endl;
 
 	cin >> choice;
 	switch (choice) {
@@ -139,6 +153,8 @@ unique_ptr<Shape> makeShape() {
 		return makeHorizontal();
 	case(7):
 		return makeVertical();
+	case(8):
+		return makeCat();
 	default:
 		cout << "Invalid option" << endl;
 	}
@@ -157,7 +173,6 @@ int main() {
 	makeShape()->doPostScript(fs);
 	fs << showpage();
 	fs.close();
-	cout << "heey";
 	return 0;
 }
 
