@@ -54,13 +54,13 @@ public:
     void doPostScript(std::ostream& os) const override;
 };
 
-//Equivalent to Polygon(3,  sideLength).
+//Equivalent to Polygon(4,  sideLength).
 class Square : public Polygon {
 public:
     Square(Length_Type sideLength=0.0);
 };
 
-//Equivalant to Polygon(4, sideLength).
+//Equivalant to Polygon(3, sideLength).
 class Triangle : public Polygon {
 public:
     Triangle(Length_Type sideLength=0.0);
