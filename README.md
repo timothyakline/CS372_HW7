@@ -1,5 +1,11 @@
 # CS372-Project-2
 
+# Contributors 
+    Jacob Jakiemiec
+    Timothy Albert Kline
+    Riley Maranville
+    Cody Abad
+
 # File list
 
 ## Shape.hpp
