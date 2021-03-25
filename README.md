@@ -21,7 +21,7 @@
   Implementation for BasicShapes.hpp.
 
 ## CompoundShapes.hpp
-  Contains classes for RotatedShape, ScaledShape, LayeredShape, VerticleShape, and HorizontalShape.
+  Contains classes for RotatedShape, ScaledShape, LayeredShape, VerticleShape, HorizontalShape, and Cat.
   
 ## CompoundShapes.cpp
   Implementation for CompoundShapes.hpp
