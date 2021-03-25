@@ -40,5 +40,7 @@ string grestore();
 string center();
 string currentpoint();
 string closepath();
+string setrgbcolor(double r, double g, double b);
+string fill();
 
 #endif
