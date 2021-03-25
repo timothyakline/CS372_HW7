@@ -39,4 +39,8 @@
   Contains test cases for classes and their member functions
   
 ## main.cpp
-  Creates a post script file
+  Creates a post script file based on user imput
+
+# Use
+  The program will ask a user for which types of shapes they want and will output them into a postscript file titled "cps.ps"
+ 
