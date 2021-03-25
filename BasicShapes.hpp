@@ -66,4 +66,14 @@ public:
     Triangle(Length_Type sideLength=0.0);
 };
 
+//unique shape
+//creates a "cat" given a radius
+class Cat : public Shape {
+public:
+	Cat(Width_Type radius = 0.0);
+	void doPostScript(std::ostream& os) const override;
+private:
+	Width_Type _radius;
+};
+
 #endif // !BASICSHAPES_HPP

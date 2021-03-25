@@ -79,3 +79,10 @@ string currentpoint() {
 string closepath() {
 	return "closepath\n";
 }
+
+string setrgbcolor(double r, double g, double b) {
+	return to_string(r) + " " + to_string(g) + " " + to_string(b) + " setrgbcolor\n";
+}
+string fill() {
+	return "fill\n";
+}
