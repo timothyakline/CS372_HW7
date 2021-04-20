@@ -10,11 +10,3 @@
 // VERS: 1.0
 
 #include "Shape.hpp"
-
-Height_Type Shape::getHeight() const{
-	return _height;
-}
-
-Width_Type Shape::getWidth() const {
-	return _width;
-}

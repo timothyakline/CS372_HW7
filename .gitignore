@@ -1,2 +1,7 @@
 .vscode/*
 .debug/CS372-*
+.vs/*
+Debug/*
+*.sln
+*.vcx*
+CppProperties.json
