@@ -14,63 +14,65 @@
 
 #include "PostScriptHelper.hpp"
 #include <cmath>
-#include <memory>
 
-//Type Aliases / Handles on data types
-using Width_Type = double;
-using Height_Type = double;
+#include "types.h"
 
-//IShape
-//Abstract interface for the Shape class
-//Purely virtual
+// IShape
+// Abstract interface for the Shape class
+// Purely virtual
 class IShape {
-public:
-  virtual ~IShape() = default;
+  public:
+    virtual ~IShape() = default;
 
-  virtual Width_Type getWidth() const = 0;
-  virtual Height_Type getHeight() const = 0;
-  virtual void doPostScript(std::ostream &os) const {}
+    virtual width_type getWidth() const = 0;
+    virtual height_type getHeight() const = 0;
+    virtual void doPostScript(std::ostream &os) const {};
 };
 
-//Shape
-//Utilizes the CRTP
-template <class DerivedShape>
-class Shape : public IShape {
-protected:
-  Shape(Width_Type width = 0, Height_Type height = 0);
-  Shape(const Shape &) = default;
-  Shape(Shape &&) = default;
+// Shape
+// Utilizes the CRTP
+template <class TShape> class Shape : public IShape {
+  protected:
+    Shape(width_type width = 0, height_type height = 0);
+    Shape(const Shape &) = default;
+    Shape(Shape &&) = default;
 
-public:
-    Height_Type getHeight() const override;
-    Width_Type getWidth() const override;
+  public:
+    height_type getHeight() const override;
+    width_type getWidth() const override;
 
-    void doPostScript(std::ostream& os) const override;
+    void doPostScript(std::ostream &os) const override;
 
-protected:
-  static constexpr double PI = 3.14159274101257324219;
-  Width_Type _width;
-  Height_Type _height;
+
+  protected:
+    width_type width_;
+    height_type height_;
+  public:
+    static constexpr double PI = 3.14159274101257324219;
 };
 
-template<class DerivedShape>
-inline Shape<DerivedShape>::Shape(Width_Type width, Height_Type height)
-    : _width(width), _height(height)
-{};
-
-template <class DerivedShape>
-inline Height_Type Shape<DerivedShape>::getHeight() const {
-	return (static_cast<DerivedShape const*>(this)->_height);
+//Default/Parameterized Constructor
+template <class TShape>
+inline Shape<TShape>::Shape(width_type width, height_type height)
+    : width_(width), height_(height){
 }
 
-template<class DerivedShape>
-inline Width_Type Shape<DerivedShape>::getWidth() const {
-	return (static_cast<DerivedShape const*>(this)->_width);
+
+///Inline static polymorphic functions
+
+template <class TShape>
+inline height_type Shape<TShape>::getHeight() const {
+    return (static_cast<TShape const *>(this)->height_);
 }
 
-template<class DerivedShape>
-inline void Shape<DerivedShape>::doPostScript(std::ostream& os) const {
-    return (static_cast<DerivedShape const*>(this)->doPostScript(os);
+template <class TShape>
+inline width_type Shape<TShape>::getWidth() const {
+    return (static_cast<TShape const *>(this)->width_);
+}
+
+template <class TShape>
+inline void Shape<TShape>::doPostScript(std::ostream &os) const {
+    return (static_cast<TShape const*>(this)->doPostScript(os));
 }
 
 #endif // !SHAPE_HPP

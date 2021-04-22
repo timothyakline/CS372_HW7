@@ -17,61 +17,59 @@
 // Creates a circle with the given radius.
 // The height and width of a circle are both 2*radius.
 class Circle : public Shape<Circle> {
-public:
-  explicit Circle(double radius = 0.0);
-  void doPostScript(std::ostream &os) const override;
+  public:
+    explicit Circle(double radius = 0.0);
+    void doPostScript(std::ostream &os) const override;
 
-private:
-  double _radius;
+  private:
+    double radius_;
 };
 
 // Creates a regular polygon with the given number of sides,
 // each of the given length, oriented so that its lowermost side is horizontal.
 class Polygon : public Shape<Polygon> {
-public:
-  using Length_Type = double;
-  const int INTERIOR_ANGLE_MIN = 60;
-  static const int NUM_SIDES_MIN = 3;
+  public:
+    explicit Polygon(int numSides = NUM_SIDES_MIN,
+                     length_type sideLength = 0.0);
+  public:
+    void doPostScript(std::ostream &os) const override;
 
-public:
-  explicit Polygon(int numSides = NUM_SIDES_MIN, Length_Type sideLength = 0.0);
-  void doPostScript(std::ostream &os) const override;
+  protected:
+    void setWidth();
+    void setHeight();
+    void setInteriorAngle();
 
-private:
-  int _numSides;
-  int _interiorAngle{INTERIOR_ANGLE_MIN};
-  Length_Type _sideLength;
-
-  void setWidth();
-  void setHeight();
-  void setInteriorAngle();
+  private:
+    int numSides_;
+    int interiorAngle_{INTERIOR_ANGLE_MIN};
+    length_type sideLength_;
 };
 
 // Creates a rectangle of the given width and height.
 class Rectangle : public Shape<Rectangle> {
-public:
-  explicit Rectangle(Width_Type width = 0.0, Height_Type height = 0.0);
-  void doPostScript(std::ostream &os) const override;
+  public:
+    explicit Rectangle(width_type width = 0.0, height_type height = 0.0);
+    void doPostScript(std::ostream &os) const override;
 };
 
 // Like a rectangle, but without drawn borders. A spacer is not visible on the
 // page.
 class Spacer : public Shape<Spacer> {
-public:
-  explicit Spacer(Width_Type width = 0.0, Height_Type height = 0.0);
-  void doPostScript(std::ostream &os) const override;
+  public:
+    explicit Spacer(width_type width = 0.0, height_type height = 0.0);
+    void doPostScript(std::ostream &os) const override;
 };
 
 // Equivalent to Polygon(4,  sideLength).
 class Square : public Polygon {
-public:
-  explicit Square(Length_Type sideLength = 0.0);
+  public:
+    explicit Square(length_type sideLength = 0.0);
 };
 
 // Equivalant to Polygon(3, sideLength).
 class Triangle : public Polygon {
-public:
-  explicit Triangle(Length_Type sideLength = 0.0);
+  public:
+    explicit Triangle(length_type sideLength = 0.0);
 };
 
 /*

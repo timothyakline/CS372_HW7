@@ -11,74 +11,72 @@
 // VERS: 1.0
 
 #include "BasicShapes.hpp"
+#include "PostScriptHelper.hpp"
 
 Circle::Circle(double radius)
-    : Shape(radius * 2, radius * 2), _radius(radius)
-{}
-
+    : Shape(radius * 2, radius * 2), radius_(radius) {}
 
 void Circle::doPostScript(std::ostream &os) const {
-  os << gsave() << currentpoint() << rmoveto(getWidth() / 2, 0)
-     << arc(_radius, 0, 360) << stroke() << grestore();
+    os << gsave() << currentpoint() << rmoveto(getWidth() / 2, 0)
+       << arc(radius_, 0, Rotation_Angle::TAU) << stroke() << grestore();
 }
 
 
-Polygon::Polygon(int numSides, Length_Type sideLength)
-    : _numSides(numSides), _sideLength(sideLength) {
-  setWidth();
-  setHeight();
-  setInteriorAngle();
-}
-
-// From the Reference Solution
-void Polygon::setHeight() {
-  if (_numSides % 2 == 0)
-    _height = _sideLength * cos(PI / _numSides) / sin(PI / _numSides);
-  else
-    _height =
-        _sideLength * (1 + cos(PI / _numSides)) / (2 * sin(PI / _numSides));
+Polygon::Polygon(int numSides, length_type sideLength)
+    : numSides_(numSides), sideLength_(sideLength) {
+    setWidth();
+    setHeight();
+    setInteriorAngle();
 }
 
 // From the Reference Solution
-void Polygon::setWidth() {
-  if (_numSides % 4 == 0)
-    _width = _sideLength * cos(PI / _numSides) / sin(PI / _numSides);
-  else if (_numSides % 2 == 0)
-    _width = _sideLength / sin(PI / _numSides);
-  else
-    _width = _sideLength * sin(PI * (_numSides - 1) / (2 * _numSides)) /
-             sin(PI / _numSides);
+void Polygon::setHeight(){
+    if (numSides_ % 2 == 0)
+        height_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
+    else
+        height_ =
+            sideLength_ * (1 + cos(PI / numSides_)) / (2 * sin(PI / numSides_));
+}
+
+// From the Reference Solution
+void Polygon::setWidth(){
+    if (numSides_ % 4 == 0)
+        width_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
+    else if (numSides_ % 2 == 0)
+        width_ = sideLength_ / sin(PI / numSides_);
+    else
+        width_ = sideLength_ * sin(PI * (numSides_ - 1) / (2 * numSides_)) /
+                 sin(PI / numSides_);
 }
 
 void Polygon::setInteriorAngle() {
-  _interiorAngle = 180 - (((_numSides - 2) * 180) / _numSides);
+    interiorAngle_ = Rotation_Angle::HALF - (((numSides_ - 2) * 180) / numSides_);
 }
 
 void Polygon::doPostScript(std::ostream &os) const {
-  os << gsave() << rmoveto(_sideLength / -2, getHeight() / -2) << "1 1 "
-     << _numSides << " {\n"
-     << rlineto(_sideLength, 0) << rotate(_interiorAngle) << "}  for\n"
-     << closepath() << stroke() << grestore();
+    os << gsave() << rmoveto(sideLength_ / -2, getHeight() / -2) << "1 1 "
+       << numSides_ << " {\n"
+       << rlineto(sideLength_, 0) << rotate(interiorAngle_) << "}  for\n"
+       << closepath() << stroke() << grestore();
 }
 
-
-Rectangle::Rectangle(Width_Type width, Height_Type height)
+Rectangle::Rectangle(width_type width, height_type height)
     : Shape{width, height} {}
 
 void Rectangle::doPostScript(std::ostream &os) const {
-  os << gsave() << rmoveto(getWidth() / -2, getHeight() / -2)
-     << rlineto(0, getHeight()) << rlineto(getWidth(), 0)
-     << rlineto(0, -1 * getHeight()) << rlineto(-1 * getWidth(), 0)
-     << closepath() << stroke() << grestore();
+    os << gsave() << rmoveto(getWidth() / -2, getHeight() / -2)
+       << rlineto(0, getHeight()) << rlineto(getWidth(), 0)
+       << rlineto(0, -1 * getHeight()) << rlineto(-1 * getWidth(), 0)
+       << closepath() << stroke() << grestore();
 }
 
-Spacer::Spacer(Width_Type width, Height_Type height) : Shape{width, height} {}
+Spacer::Spacer(width_type width, height_type height) : Shape{width, height} {}
 
 void Spacer::doPostScript(std::ostream &os) const {}
 
-Square::Square(Length_Type sideLength) : Polygon(4, sideLength) {}
+Square::Square(length_type sideLength) : Polygon(4, sideLength) {}
 
-Triangle::Triangle(Length_Type sideLength) : Polygon(3, sideLength) {}
+Triangle::Triangle(length_type sideLength) : Polygon(3, sideLength) {}
 
 /*
 Cat::Cat(Width_Type radius) : Shape{ radius * 2, radius * 2 }, _radius(radius){

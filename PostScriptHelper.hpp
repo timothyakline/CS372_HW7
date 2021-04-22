@@ -3,7 +3,6 @@
 // AUTH: Jacob Jakiemiec
 //		 Riley Maranville
 //       Cody Abad
-//		 {ADD YOUR NAME IF YOU CHANGE ANYTHING HERE}
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
@@ -17,8 +16,8 @@
 #include <string>
 using std::fstream;
 using std::ofstream;
-using std::to_string;
 using std::string;
+using std::to_string;
 
 #define CenterX 306
 #define CenterY 396
