@@ -18,7 +18,7 @@
 // The height and width of a circle are both 2*radius.
 class Circle : public Shape<Circle> {
 public:
-  Circle(double radius = 0.0);
+  explicit Circle(double radius = 0.0);
   void doPostScript(std::ostream &os) const override;
 
 private:
@@ -30,25 +30,27 @@ private:
 class Polygon : public Shape<Polygon> {
 public:
   using Length_Type = double;
+  const int INTERIOR_ANGLE_MIN = 60;
+  static const int NUM_SIDES_MIN = 3;
 
 public:
-  Polygon(int numSides = 3, Length_Type sideLength = 0.0);
+  explicit Polygon(int numSides = NUM_SIDES_MIN, Length_Type sideLength = 0.0);
   void doPostScript(std::ostream &os) const override;
 
 private:
   int _numSides;
-  int _interiorAngle{30};
+  int _interiorAngle{INTERIOR_ANGLE_MIN};
   Length_Type _sideLength;
 
-  void setHeight();
   void setWidth();
+  void setHeight();
   void setInteriorAngle();
 };
 
 // Creates a rectangle of the given width and height.
 class Rectangle : public Shape<Rectangle> {
 public:
-  Rectangle(Width_Type width = 0.0, Height_Type height = 0.0);
+  explicit Rectangle(Width_Type width = 0.0, Height_Type height = 0.0);
   void doPostScript(std::ostream &os) const override;
 };
 
@@ -56,21 +58,22 @@ public:
 // page.
 class Spacer : public Shape<Spacer> {
 public:
-  Spacer(Width_Type width = 0.0, Height_Type height = 0.0);
+  explicit Spacer(Width_Type width = 0.0, Height_Type height = 0.0);
   void doPostScript(std::ostream &os) const override;
 };
 
 // Equivalent to Polygon(4,  sideLength).
 class Square : public Polygon {
 public:
-  Square(Length_Type sideLength = 0.0);
+  explicit Square(Length_Type sideLength = 0.0);
 };
 
 // Equivalant to Polygon(3, sideLength).
 class Triangle : public Polygon {
 public:
-  Triangle(Length_Type sideLength = 0.0);
+  explicit Triangle(Length_Type sideLength = 0.0);
 };
+
 /*
 //unique shape
 //creates a "cat" given a radius
