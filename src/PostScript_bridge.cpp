@@ -1,4 +1,4 @@
-// FNAM: PostScriptHelper.cpp
+// FNAM: PostScript_bridge.cpp
 // DESC: C++ to PostScript functions
 // AUTH: Jacob Jakiemiec
 //       Cody Abad
@@ -8,7 +8,7 @@
 // UPDT: 22 March 2021
 // VERS: 1.0
 
-#include "PostScriptHelper.hpp"
+#include "../include/PostScript_bridge.hpp"
 
 string moveto(int x, int y) {
     return to_string(x) + " " + to_string(y) + " moveto\n";

@@ -1,5 +1,5 @@
-// FNAM: CompoundShapes.cpp
-// DESC: Compound shape class functions
+// FNAM: ComplexShapes.cpp
+// DESC: Complex shape class functions
 // AUTH: Timothy Albert Kline
 //       Riley Maranville
 //       Cody Abad
@@ -7,16 +7,15 @@
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: 23 March 2021
+// UPDT: 23 April 2021
 // VERS: 1.0
-#include "CompoundShapes.hpp"
+#include "../include/ComplexShapes.hpp"
 #include <algorithm>
 
 RotatedShape::RotatedShape(shape_ptr shape, const Rotation_Angle &rotationAngle)
-    : Shape{shape->getWidth(), shape->getHeight()},
+    : Shape{shape->getWidth(), shape->getHeight()}, shape_(std::move(shape)),
       rotation_(rotationAngle) {
-    shape_ = std::move(shape);
-    switch (rotationAngle) {
+    switch (rotation_) {
     case QUARTER:
     case THREE_QTRS:
         std::swap(height_, width_);
@@ -32,12 +31,10 @@ void RotatedShape::doPostScript(std::ostream &os) const {
     os << grestore();
 }
 
-ScaledShape::ScaledShape(shape_ptr shape, const scale_precision_type &fx, const scale_precision_type &fy)
-    : Shape{(shape->getWidth())*fx, (shape->getHeight())*fy},
-      fx_(fx), fy_(fy)
-{
-    shape_ = std::move(shape);
-}
+ScaledShape::ScaledShape(shape_ptr shape, const scale_precision_type &fx,
+                         const scale_precision_type &fy)
+    : Shape{(shape->getWidth()) * fx, (shape->getHeight()) * fy},
+      shape_(std::move(shape)), fx_(fx), fy_(fy) {}
 
 void ScaledShape::doPostScript(std::ostream &os) const {
     os << gsave() << scale(fx_, fy_);
@@ -45,20 +42,30 @@ void ScaledShape::doPostScript(std::ostream &os) const {
     os << grestore();
 }
 
-ComplexShape::ComplexShape() : Shape{ 0,0 } {}
+//void LayeredShape::setWidth(const width_type &wid) {
+//    width_ = std::max(width_, wid);
+//}
+//
+//void LayeredShape::setHeight(const height_type &hgt) {
+//    height_ = std::max(height_, hgt);
+//}
 
-void ComplexShape::updateDimensions(){};
-
-
-void LayeredShape::doPostScript(std::ostream &os) const {
-    os << gsave();
-    for (auto &&s : shapes_)
+//void LayeredShape::doPostScript(std::ostream &os) const {
+    /*os << gsave();
+    for (auto &&s : shapes_) {
         s->doPostScript(os);
-    os << grestore();
-}
+    }
+    os << grestore();*/
+//}
+
+//void VerticalShape::setWidth(const width_type &wid) {
+//    width_ = std::max(width_, wid);
+//}
+
+void VerticalShape::setHeight(const height_type &hgt) { height_ += hgt; }
 
 void VerticalShape::doPostScript(std::ostream &os) const {
-    shapes_[0]->doPostScript(os);
+    /*shapes_[0]->doPostScript(os);
 
     for (int i = 1; i < shapes_.size(); ++i) {
         height_type offset =
@@ -67,11 +74,16 @@ void VerticalShape::doPostScript(std::ostream &os) const {
         shapes_[i]->doPostScript(os);
     }
     os << rmoveto(0, shapes_.back()->getHeight() / 2)
-       << rmoveto(0, height_ / (-2));
+       << rmoveto(0, height_ / (-2));*/
 }
 
+void HorizontalShape::setWidth(const width_type &wid) { width_ += wid; }
+//void HorizontalShape::setHeight(const height_type &hgt) {
+//    height_ = std::max(height_, hgt);
+//};
+
 void HorizontalShape::doPostScript(std::ostream &os) const {
-    shapes_[0]->doPostScript(os);
+    /*shapes_[0]->doPostScript(os);
 
     for (int i = 1; i < shapes_.size(); ++i) {
         width_type offset =
@@ -80,5 +92,5 @@ void HorizontalShape::doPostScript(std::ostream &os) const {
         shapes_[i]->doPostScript(os);
     }
     os << rmoveto(shapes_.back()->getWidth() / 2, 0)
-       << rmoveto(width_ / (-2), 0);
+       << rmoveto(width_ / (-2), 0);*/
 }

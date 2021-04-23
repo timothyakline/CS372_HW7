@@ -31,10 +31,11 @@ class Polygon : public Shape<Polygon> {
   public:
     explicit Polygon(int numSides = NUM_SIDES_MIN,
                      length_type sideLength = 0.0);
+
   public:
     void doPostScript(std::ostream &os) const override;
 
-  protected:
+  public:
     void setWidth();
     void setHeight();
     void setInteriorAngle();

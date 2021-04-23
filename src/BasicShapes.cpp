@@ -10,8 +10,8 @@
 // UPDT: 22 April 2021
 // VERS: 1.0
 
-#include "BasicShapes.hpp"
-#include "PostScriptHelper.hpp"
+#include "../include/BasicShapes.hpp"
+#include "../include/PostScript_bridge.hpp"
 
 Circle::Circle(double radius)
     : Shape(radius * 2, radius * 2), radius_(radius) {}
@@ -21,7 +21,6 @@ void Circle::doPostScript(std::ostream &os) const {
        << arc(radius_, 0, Rotation_Angle::TAU) << stroke() << grestore();
 }
 
-
 Polygon::Polygon(int numSides, length_type sideLength)
     : numSides_(numSides), sideLength_(sideLength) {
     setWidth();
@@ -30,27 +29,30 @@ Polygon::Polygon(int numSides, length_type sideLength)
 }
 
 // From the Reference Solution
-void Polygon::setHeight(){
-    if (numSides_ % 2 == 0)
+void Polygon::setHeight() {
+    if (numSides_ % 2 == 0) {
         height_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
-    else
+    } else {
         height_ =
             sideLength_ * (1 + cos(PI / numSides_)) / (2 * sin(PI / numSides_));
+    }
 }
 
 // From the Reference Solution
-void Polygon::setWidth(){
-    if (numSides_ % 4 == 0)
+void Polygon::setWidth() {
+    if (numSides_ % 4 == 0) {
         width_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
-    else if (numSides_ % 2 == 0)
+    } else if (numSides_ % 2 == 0) {
         width_ = sideLength_ / sin(PI / numSides_);
-    else
+    } else {
         width_ = sideLength_ * sin(PI * (numSides_ - 1) / (2 * numSides_)) /
                  sin(PI / numSides_);
+    }
 }
 
 void Polygon::setInteriorAngle() {
-    interiorAngle_ = Rotation_Angle::HALF - (((numSides_ - 2) * 180) / numSides_);
+    interiorAngle_ = Rotation_Angle::HALF -
+                     (((numSides_ - 2) * Rotation_Angle::HALF) / numSides_);
 }
 
 void Polygon::doPostScript(std::ostream &os) const {
