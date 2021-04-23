@@ -27,14 +27,16 @@ class IShape {
     [[nodiscard]] virtual auto getHeight() const -> height_type = 0;
     // virtual void setWidth(const width_type &wid){};
     // virtual void setHeight(const height_type &hgt){};
-    virtual void doPostScript(std::ostream &os) const {};
+    virtual void doPostScript(std::ostream &os) const = 0;
 };
 
 // CRTPHelper
 // Helper class for the static_cast calls
 // https://www.fluentcpp.com/2017/05/19/crtp-helper/
 template <typename T> struct CRTPHelper {
+    //By reference
     [[nodiscard]] auto underlying() -> T & { return static_cast<T &>(*this); }
+    //By const reference
     [[nodiscard]] auto underlying() const -> T const & {
         return static_cast<T const &>(*this);
     }
@@ -42,7 +44,8 @@ template <typename T> struct CRTPHelper {
 
 // Shape
 // CRTP Base Class
-// Inherits pure virtual functions from interface IShape
+// Overrides pure virtual functions from interface IShape
+// for "SomeShape" to point to it's own implementations.
 template <class TShape> class Shape : public IShape, public CRTPHelper<TShape> {
   protected:
     Shape(width_type width = 0, height_type height = 0);
@@ -62,29 +65,32 @@ template <class TShape> class Shape : public IShape, public CRTPHelper<TShape> {
 
   public:
     static constexpr double PI = 3.14159274101257324219;
+    static constexpr int INTERIOR_ANGLE_MIN = 60;
+    static constexpr int NUM_SIDES_MIN = 3;
 };
 
 // Default/Parameterized Constructor
 template <class TShape>
 inline Shape<TShape>::Shape(width_type width, height_type height)
-    : width_(width), height_(height) {}
+    : width_(width), height_(height)
+{};
 
 /// Inline static polymorphic functions
 
 template <class TShape>
 inline auto Shape<TShape>::getHeight() const -> height_type {
     return this->underlying().height_;
-}
+};
 
 template <class TShape>
 inline auto Shape<TShape>::getWidth() const -> width_type {
     return this->underlying().width_;
-}
+};
 
 template <class TShape>
 inline void Shape<TShape>::doPostScript(std::ostream &os) const {
     this->underlying().doPostScript(os);
-}
+};
 
 // template <class TShape>
 // inline void Shape<TShape>::setWidth(const width_type &wid) {

@@ -8,7 +8,7 @@
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
 // UPDT: 23 April 2021
-// VERS: 1.0
+// VERS: 2.0
 #include "../include/ComplexShapes.hpp"
 #include <algorithm>
 
@@ -42,29 +42,27 @@ void ScaledShape::doPostScript(std::ostream &os) const {
     os << grestore();
 }
 
-//void LayeredShape::setWidth(const width_type &wid) {
-//    width_ = std::max(width_, wid);
-//}
-//
-//void LayeredShape::setHeight(const height_type &hgt) {
-//    height_ = std::max(height_, hgt);
-//}
-
-//void LayeredShape::doPostScript(std::ostream &os) const {
-    /*os << gsave();
-    for (auto &&s : shapes_) {
+void LayeredShape::doPostScript(std::ostream &os) const {
+    os << gsave() << "";
+    for (const auto &s : getShapes()) {
+        os << "";
         s->doPostScript(os);
+        os << "";
     }
-    os << grestore();*/
-//}
-
-//void VerticalShape::setWidth(const width_type &wid) {
-//    width_ = std::max(width_, wid);
-//}
+    os << grestore();
+}
 
 void VerticalShape::setHeight(const height_type &hgt) { height_ += hgt; }
 
 void VerticalShape::doPostScript(std::ostream &os) const {
+    os << gsave() << rmoveto(0, -getHeight() / 2);
+    for (const auto &s : getShapes()) {
+        os << rmoveto(0, s->getHeight() / 2);
+        s->doPostScript(os);
+        os << rmoveto(0, s->getHeight() / 2);
+    }
+    os << grestore();
+
     /*shapes_[0]->doPostScript(os);
 
     for (int i = 1; i < shapes_.size(); ++i) {
@@ -78,11 +76,17 @@ void VerticalShape::doPostScript(std::ostream &os) const {
 }
 
 void HorizontalShape::setWidth(const width_type &wid) { width_ += wid; }
-//void HorizontalShape::setHeight(const height_type &hgt) {
-//    height_ = std::max(height_, hgt);
-//};
 
 void HorizontalShape::doPostScript(std::ostream &os) const {
+    os << gsave() << rmoveto(-getWidth() / 2, 0);
+
+    for (const auto &s : getShapes()) {
+        os << rmoveto(s->getWidth() / 2, 0);
+        s->doPostScript(os);
+        os << rmoveto(s->getWidth() / 2, 0);
+    }
+    os << grestore();
+    
     /*shapes_[0]->doPostScript(os);
 
     for (int i = 1; i < shapes_.size(); ++i) {

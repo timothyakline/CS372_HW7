@@ -1,23 +1,14 @@
+// FNAM: CompoundShape.cpp
+// DESC: CompoundShape base class function definitions
+// AUTH: Timothy Albert Kline
+// CRSE: F372 - Software Construction
+// PROF: Dr. Chris Hartman
+// STRT: 22 March 2021
+// UPDT: 23 April 2021
+// VERS: 1.0
 #include "../include/CompoundShape.hpp"
 
-//CompoundShape::CompoundShape() : Shape{0, 0} {}
-
-// double CompoundShape::getMaximum(double &num) {
-//    for (const auto &s : shapes_) {
-//        num = std::max(num, s->getHeight());
-//    }
-//    return num;
-//}
-//
-// double CompoundShape::increment(double &num) {
-//    for (const auto &s : shapes_) {
-//        num += s->getHeight();
-//    }
-//    return num;
-//}
-
-void CompoundShape::setWidth(const width_type &wid)
-{
+void CompoundShape::setWidth(const width_type &wid) {
     width_ = std::max(width_, wid);
 }
 
@@ -38,9 +29,11 @@ void CompoundShape::updateDimensions(const width_type &wid,
     setHeight(hgt);
 }
 
-/// addShapes [TERMINAL/VOID/NULL CASE]
-// Recursive Variadic Template functions
-// To add shapes to an existing CompoundShape object
-void CompoundShape::addShapes(){};
+shape_container const &CompoundShape::getShapes() const { return shapes_; }
 
-shape_container CompoundShape::getShapes() const { return shapes_; }
+void CompoundShape::outline(std::ostream &os) {
+    for (auto i = 0L; i < getShapes().size(); ++i) {
+        // moveToPositionForShape(i);
+        getShapes()[i]->doPostScript(os);
+    }
+}

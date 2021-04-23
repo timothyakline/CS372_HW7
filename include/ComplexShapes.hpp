@@ -8,7 +8,7 @@
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
 // UPDT: 23 March 2021
-// VERS: 1.0
+// VERS: 2.0
 #ifndef COMPLEX_SHAPES_HPP
 #define COMPLEX_SHAPES_HPP
 
@@ -17,7 +17,10 @@
 // Takes a shape and a rotation angle, which is either 90, 180 or 270 degrees.
 class RotatedShape : public Shape<RotatedShape> {
   public:
-    RotatedShape(shape_ptr shape, const Rotation_Angle &rotationAngle = NONE);
+    RotatedShape(shape_ptr shape,
+                 const Rotation_Angle &rotationAngle = Rotation_Angle::NONE);
+
+  public:
     void doPostScript(std::ostream &os) const override;
 
   private:
@@ -46,13 +49,20 @@ class ScaledShape : public Shape<ScaledShape> {
 // shape is the maximum of the heights and widths of the component shapes.
 class LayeredShape : public CompoundShape {
   public:
-  
+    explicit LayeredShape() : CompoundShape(){};
+    //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
+    template <typename TShape> explicit LayeredShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename... TShape> explicit LayeredShape(TShape &&...shapes);
 
   public:
     void doPostScript(std::ostream &os) const override;
 };
+
+template <typename TShape>
+inline LayeredShape::LayeredShape(TShape &&shape) : CompoundShape(shape) {
+    initDimensions();
+}
 
 template <typename... TShape>
 inline LayeredShape::LayeredShape(TShape &&...shapes)
@@ -62,6 +72,9 @@ inline LayeredShape::LayeredShape(TShape &&...shapes)
 
 class VerticalShape : public CompoundShape {
   public:
+    explicit VerticalShape() : CompoundShape(){};
+    //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
+    template <typename TShape> explicit VerticalShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename... TShape> explicit VerticalShape(TShape &&...shapes);
 
@@ -73,14 +86,23 @@ class VerticalShape : public CompoundShape {
     void doPostScript(std::ostream &os) const override;
 };
 
+template <typename TShape>
+inline VerticalShape::VerticalShape(TShape &&shape) : CompoundShape(shape) {
+    initDimensions();
+}
+
 template <typename... TShape>
 inline VerticalShape::VerticalShape(TShape &&...shapes)
     : CompoundShape(shapes...) {
     initDimensions();
 }
 
+
 class HorizontalShape : public CompoundShape {
   public:
+    explicit HorizontalShape() : CompoundShape(){};
+    //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
+    template <typename TShape> explicit HorizontalShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename... TShape> explicit HorizontalShape(TShape &&...shapes);
 
@@ -91,6 +113,11 @@ class HorizontalShape : public CompoundShape {
   public:
     void doPostScript(std::ostream &os) const override;
 };
+
+template <typename TShape>
+inline HorizontalShape::HorizontalShape(TShape &&shape) : CompoundShape(shape) {
+    initDimensions();
+}
 
 template <typename... TShape>
 inline HorizontalShape::HorizontalShape(TShape &&...shapes)

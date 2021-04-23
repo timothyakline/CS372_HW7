@@ -26,9 +26,6 @@ using shape_ptr = std::shared_ptr<IShape>;
 // handle for container of the smart pointer type for shapes
 using shape_container = std::vector<shape_ptr>;
 
-constexpr int INTERIOR_ANGLE_MIN = 60;
-constexpr int NUM_SIDES_MIN = 3;
-
 // Enum for select rotation angles
 enum Rotation_Angle {
     NONE = 0,

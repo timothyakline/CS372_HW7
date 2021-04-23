@@ -7,8 +7,8 @@
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: 22 April 2021
-// VERS: 1.0
+// UPDT: 23 April 2021
+// VERS: 2.0
 
 #include "../include/BasicShapes.hpp"
 #include "../include/PostScript_bridge.hpp"
@@ -16,20 +16,38 @@
 Circle::Circle(double radius)
     : Shape(radius * 2, radius * 2), radius_(radius) {}
 
+//Modified to copy the reference solution
 void Circle::doPostScript(std::ostream &os) const {
-    os << gsave() << currentpoint() << rmoveto(getWidth() / 2, 0)
-       << arc(radius_, 0, Rotation_Angle::TAU) << stroke() << grestore();
+    os << gsave() << currentpoint()
+       << /*rmoveto(getWidth() / 2, 0)*/ translate() << newpath() << point(0,0)
+       << arc(radius_, 0, Rotation_Angle::TAU)
+       << closepath() << stroke() << grestore();
 }
+
+Rectangle::Rectangle(width_type width, height_type height)
+    : Shape{width, height} {}
+
+//Modified to copy the reference solution
+void Rectangle::doPostScript(std::ostream &os) const {
+    os << gsave() << rmoveto(-getWidth() / 2, -getHeight() / 2)
+       << rlineto(getWidth(), 0) << rlineto(0, getHeight())
+       << rlineto(0, getHeight()) << rlineto(-1 * getWidth(), 0)
+       << closepath() << stroke() << grestore();
+}
+
+Spacer::Spacer(width_type width, height_type height) : Shape{width, height} {}
+
+void Spacer::doPostScript(std::ostream &os) const {}
 
 Polygon::Polygon(int numSides, length_type sideLength)
     : numSides_(numSides), sideLength_(sideLength) {
-    setWidth();
-    setHeight();
-    setInteriorAngle();
+    initWidth();
+    initHeight();
+    initInteriorAngle();
 }
 
 // From the Reference Solution
-void Polygon::setHeight() {
+void Polygon::initHeight() {
     if (numSides_ % 2 == 0) {
         height_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
     } else {
@@ -39,7 +57,7 @@ void Polygon::setHeight() {
 }
 
 // From the Reference Solution
-void Polygon::setWidth() {
+void Polygon::initWidth() {
     if (numSides_ % 4 == 0) {
         width_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
     } else if (numSides_ % 2 == 0) {
@@ -50,7 +68,7 @@ void Polygon::setWidth() {
     }
 }
 
-void Polygon::setInteriorAngle() {
+void Polygon::initInteriorAngle() {
     interiorAngle_ = Rotation_Angle::HALF -
                      (((numSides_ - 2) * Rotation_Angle::HALF) / numSides_);
 }
@@ -61,20 +79,6 @@ void Polygon::doPostScript(std::ostream &os) const {
        << rlineto(sideLength_, 0) << rotate(interiorAngle_) << "}  for\n"
        << closepath() << stroke() << grestore();
 }
-
-Rectangle::Rectangle(width_type width, height_type height)
-    : Shape{width, height} {}
-
-void Rectangle::doPostScript(std::ostream &os) const {
-    os << gsave() << rmoveto(getWidth() / -2, getHeight() / -2)
-       << rlineto(0, getHeight()) << rlineto(getWidth(), 0)
-       << rlineto(0, -1 * getHeight()) << rlineto(-1 * getWidth(), 0)
-       << closepath() << stroke() << grestore();
-}
-
-Spacer::Spacer(width_type width, height_type height) : Shape{width, height} {}
-
-void Spacer::doPostScript(std::ostream &os) const {}
 
 Square::Square(length_type sideLength) : Polygon(4, sideLength) {}
 

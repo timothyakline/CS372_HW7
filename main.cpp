@@ -49,12 +49,24 @@ auto main() -> int {
     auto myCircle = makeCircle(5.7);
     auto myTriangle = makeCircle(8.9);
     auto mySquare = makeCircle(2.3);
-    std::cout << myCircle->getHeight() << std::endl;
-    auto myLS = makeLayeredShape(myCircle, mySquare, myTriangle);
-    /*auto myLS2 = std::make_shared<LayeredShape>(
+    //std::cout << myCircle->getHeight() << std::endl;
+    //auto myLS = makeLayeredShape(myCircle, mySquare, myTriangle);
+    auto myLS2 = std::make_shared<LayeredShape>(
         std::shared_ptr<Circle>(new Circle(38.7)), myTriangle, mySquare);
-    std::cout << myLS2->getHeight() << std::endl << myLS2->getWidth();*/
-    std::cout << myLS->getHeight() << std::endl << myLS->getWidth();
+    std::cout << myLS2->getHeight() << ", " << myLS2->getWidth();
+    std::cout << std::endl;
+    auto myVS = std::make_shared<VerticalShape>(
+        std::shared_ptr<Circle>(new Circle(38.7)), myTriangle, mySquare);
+    std::cout << myVS->getHeight() << ", " << myVS->getWidth();
+    std::cout << std::endl;    
+    auto myHS = std::make_shared<HorizontalShape>(
+        std::shared_ptr<Circle>(new Circle(38.7)), myTriangle, mySquare);
+    std::cout << myHS->getHeight() << ", " << myHS->getWidth();
+    //std::cout << myLS->getHeight() << std::endl << myLS->getWidth();
+    std::cout << std::endl;
 
+    myHS->addShapes(mySquare);
+    std::cout << myHS->getHeight() << ", " << myHS->getWidth();
+    std::cout << std::endl;
     return 0;
 }
