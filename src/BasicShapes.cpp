@@ -17,17 +17,27 @@ Circle::Circle(double radius)
     : Shape(radius * 2, radius * 2), radius_(radius) {}
 
 // From the reference solution
+auto Circle::getPostScript() const -> std::string {
+    return gsave() + currentpoint() +
+           /*rmoveto(getWidth() / 2, 0)*/ translate() + newpath() +
+           point(0, 0) + arc(radius_, 0, Rotation_Angle::TAU) + closepath() +
+           stroke() + grestore();
 }
 
 Rectangle::Rectangle(width_type width, height_type height)
     : Shape{width, height} {}
 
 // From the reference solution
+auto Rectangle::getPostScript() const -> std::string {
+    return gsave() + rmoveto(-getWidth() / 2, -getHeight() / 2) +
+           rlineto(getWidth(), 0) + rlineto(0, getHeight()) +
+           rlineto(0, getHeight()) + rlineto(-1 * getWidth(), 0) + closepath() +
+           stroke() + grestore();
 }
 
 Spacer::Spacer(width_type width, height_type height) : Shape{width, height} {}
 
-void Spacer::doPostScript(std::ostream &os) const {}
+auto Spacer::getPostScript() const -> std::string { return {}; };
 
 Polygon::Polygon(int numSides, length_type sideLength)
     : numSides_(numSides), sideLength_(sideLength) {
@@ -63,11 +73,11 @@ void Polygon::initInteriorAngle() {
                      (((numSides_ - 2) * Rotation_Angle::HALF) / numSides_);
 }
 
-void Polygon::doPostScript(std::ostream &os) const {
-    os << gsave() << rmoveto(sideLength_ / -2, getHeight() / -2) << "1 1 "
-       << numSides_ << " {\n"
-       << rlineto(sideLength_, 0) << rotate(interiorAngle_) << "}  for\n"
-       << closepath() << stroke() << grestore();
+auto Polygon::getPostScript() const -> std::string {
+    return gsave() + rmoveto(sideLength_ / -2, getHeight() / -2) + point(1, 1) +
+           makeString(numSides_) + " {\n" + rlineto(sideLength_, 0) +
+           rotate(interiorAngle_) + "}  for\n" + closepath() + stroke() +
+           grestore();
 }
 
 Square::Square(length_type sideLength) : Polygon(4, sideLength) {}

@@ -25,9 +25,7 @@ class IShape {
 
     [[nodiscard]] virtual auto getWidth() const -> width_type = 0;
     [[nodiscard]] virtual auto getHeight() const -> height_type = 0;
-    // virtual void setWidth(const width_type &wid){};
-    // virtual void setHeight(const height_type &hgt){};
-    virtual void doPostScript(std::ostream &os) const = 0;
+    [[nodiscard]] virtual auto getPostScript() const -> std::string = 0;
 };
 
 // CRTPHelper
@@ -55,9 +53,7 @@ template <class TShape> class Shape : public IShape, public CRTPHelper<TShape> {
   public:
     [[nodiscard]] auto getWidth() const -> width_type override;
     [[nodiscard]] auto getHeight() const -> height_type override;
-    /*void setWidth(const width_type &wid) override;
-    void setHeight(const height_type &hgt) override;*/
-    void doPostScript(std::ostream &os) const override;
+    [[nodiscard]] auto getPostScript() const -> std::string override;
 
   protected:
     width_type width_;
@@ -87,8 +83,8 @@ inline auto Shape<TShape>::getWidth() const -> width_type {
 };
 
 template <class TShape>
-inline void Shape<TShape>::doPostScript(std::ostream &os) const {
-    this->underlying().doPostScript(os);
+inline auto Shape<TShape>::getPostScript() const -> std::string {
+    return this->underlying().getPostScript();
 };
 
 #endif // !SHAPE_HPP

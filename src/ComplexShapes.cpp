@@ -25,10 +25,12 @@ RotatedShape::RotatedShape(shape_ptr shape, const Rotation_Angle &rotationAngle)
     }
 }
 
-void RotatedShape::doPostScript(std::ostream &os) const {
-    os << gsave() << rotate(rotation_);
-    shape_->doPostScript(os);
-    os << grestore();
+auto RotatedShape::getPostScript() const -> std::string {
+    std::string result = gsave() + rotate(rotation_);
+    result += rmoveto(0, 0);
+    result += shape_->getPostScript();
+    result += rmoveto(0, 0);
+    return result += grestore();
 }
 
 ScaledShape::ScaledShape(shape_ptr shape, const scale_precision_type &fx,
@@ -36,32 +38,46 @@ ScaledShape::ScaledShape(shape_ptr shape, const scale_precision_type &fx,
     : Shape{(shape->getWidth()) * fx, (shape->getHeight()) * fy},
       shape_(std::move(shape)), fx_(fx), fy_(fy) {}
 
-void ScaledShape::doPostScript(std::ostream &os) const {
-    os << gsave() << scale(fx_, fy_);
-    shape_->doPostScript(os);
-    os << grestore();
+auto ScaledShape::getPostScript() const -> std::string {
+    std::string result = gsave() + scale(fx_, fy_);
+    result += rmoveto(0, 0);
+    result += shape_->getPostScript();
+    result += rmoveto(0, 0);
+    return result += grestore();
 }
 
-void LayeredShape::doPostScript(std::ostream &os) const {
-    os << gsave() << "";
-    for (const auto &s : getShapes()) {
-        os << "";
-        s->doPostScript(os);
-        os << "";
-    }
-    os << grestore();
+auto LayeredShape::moveToPositionForShape(const long &index) const
+    -> std::string {
+    return rmoveto(0, 0);
+    // std::string result = gsave() + rmoveto(0, 0);
+    // for (const auto &s : getShapes()) {
+    //    result += rmoveto(0, 0);
+    //    result += s->getPostScript();
+    //    result += rmoveto(0, 0);
+    //}
+    // return result += grestore();
 }
 
 void VerticalShape::setHeight(const height_type &hgt) { height_ += hgt; }
 
-void VerticalShape::doPostScript(std::ostream &os) const {
-    os << gsave() << rmoveto(0, -getHeight() / 2);
-    for (const auto &s : getShapes()) {
-        os << rmoveto(0, s->getHeight() / 2);
-        s->doPostScript(os);
-        os << rmoveto(0, s->getHeight() / 2);
+auto VerticalShape::moveToPositionForShape(const long &index) const
+    -> std::string {
+    if (index == 0L) {
+        return rmoveto(
+            0, calculateOffset(getShapes()[index]->getHeight(), -getHeight()));
     }
-    os << grestore();
+    // if (index == getShapes().size()) {
+    //    return rmoveto(0, getShapes()[index]->getHeight() / 2);
+    //}
+    return rmoveto(0, calculateOffset(getShapes()[index]->getHeight(),
+                                      getShapes()[index - 1]->getHeight()));
+    /*std::string result = gsave() + rmoveto(0, -getHeight() / 2.0);
+    for (const auto &s : getShapes()) {
+        result += rmoveto(0, s->getHeight() / 2);
+        result += s->getPostScript();
+        result += rmoveto(0, s->getHeight() / 2);
+    }
+    return result += grestore();*/
 
     /*shapes_[0]->doPostScript(os);
 
@@ -77,16 +93,26 @@ void VerticalShape::doPostScript(std::ostream &os) const {
 
 void HorizontalShape::setWidth(const width_type &wid) { width_ += wid; }
 
-void HorizontalShape::doPostScript(std::ostream &os) const {
-    os << gsave() << rmoveto(-getWidth() / 2, 0);
-
-    for (const auto &s : getShapes()) {
-        os << rmoveto(s->getWidth() / 2, 0);
-        s->doPostScript(os);
-        os << rmoveto(s->getWidth() / 2, 0);
+auto HorizontalShape::moveToPositionForShape(const long &index) const
+    -> std::string {
+    if (index == 0L) {
+        return rmoveto(
+            calculateOffset(getShapes()[index]->getWidth(), -getWidth()), 0);
     }
-    os << grestore();
-    
+    // if (index == getShapes().size())) {
+    //    return rmoveto(getShapes()[index]->getWidth() / 2, 0);
+    //}
+    return rmoveto(calculateOffset(getShapes()[index]->getWidth(),
+                                   getShapes()[index - 1]->getWidth()),
+                   0);
+    // std::string result = gsave() + rmoveto(-getWidth() / 2, 0);
+    // for (const auto &s : getShapes()) {
+    //    result += rmoveto(s->getWidth() / 2, 0);
+    //    result += s->getPostScript();
+    //    result += rmoveto(s->getWidth() / 2, 0);
+    //}
+    // return result += grestore();
+
     /*shapes_[0]->doPostScript(os);
 
     for (int i = 1; i < shapes_.size(); ++i) {

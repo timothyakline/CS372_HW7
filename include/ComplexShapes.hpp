@@ -21,7 +21,7 @@ class RotatedShape : public Shape<RotatedShape> {
                  const Rotation_Angle &rotationAngle = Rotation_Angle::NONE);
 
   public:
-    void doPostScript(std::ostream &os) const override;
+    [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
     shape_ptr shape_;
@@ -35,7 +35,9 @@ class ScaledShape : public Shape<ScaledShape> {
   public:
     ScaledShape(shape_ptr shape, const scale_precision_type &fx,
                 const scale_precision_type &fy);
-    void doPostScript(std::ostream &os) const override;
+
+  public:
+    [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
     shape_ptr shape_;
@@ -55,8 +57,9 @@ class LayeredShape : public CompoundShape {
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename... TShape> explicit LayeredShape(TShape &&...shapes);
 
-  public:
-    void doPostScript(std::ostream &os) const override;
+  private:
+    [[nodiscard]] auto moveToPositionForShape(const long &index) const
+        -> std::string override;
 };
 
 template <typename TShape>
@@ -79,11 +82,9 @@ class VerticalShape : public CompoundShape {
     template <typename... TShape> explicit VerticalShape(TShape &&...shapes);
 
   private:
-    // void setWidth(const width_type &wid) override;
     void setHeight(const height_type &hgt) override;
-
-  public:
-    void doPostScript(std::ostream &os) const override;
+    [[nodiscard]] auto moveToPositionForShape(const long &index) const
+        -> std::string override;
 };
 
 template <typename TShape>
@@ -97,7 +98,6 @@ inline VerticalShape::VerticalShape(TShape &&...shapes)
     initDimensions();
 }
 
-
 class HorizontalShape : public CompoundShape {
   public:
     // explicit HorizontalShape() : CompoundShape(){};
@@ -108,10 +108,8 @@ class HorizontalShape : public CompoundShape {
 
   private:
     void setWidth(const width_type &wid) override;
-    // void setHeight(const height_type &hgt) override;
-
-  public:
-    void doPostScript(std::ostream &os) const override;
+    [[nodiscard]] auto moveToPositionForShape(const long &index) const
+        -> std::string override;
 };
 
 template <typename TShape>

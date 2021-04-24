@@ -68,5 +68,9 @@ auto main() -> int {
     myHS->addShapes(mySquare);
     std::cout << myHS->getHeight() << ", " << myHS->getWidth();
     std::cout << std::endl;
+
+    std::cout << moveto(306, 306) << myHS->getPostScript() << showpage();
+
+    LayeredShape myLS;
     return 0;
 }

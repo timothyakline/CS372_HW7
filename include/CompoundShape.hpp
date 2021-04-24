@@ -29,6 +29,8 @@ class CompoundShape : public Shape<CompoundShape> {
     void updateDimensions(const width_type &wid, const height_type &hgt);
 
     [[nodiscard]] auto getShapes() const -> shape_container const &;
+    [[nodiscard]] static auto calculateOffset(const double &lhs,
+                                              const double &rhs) -> double;
 
   protected:
     /// addShapes [TERMINAL/VOID/NULL CASE]

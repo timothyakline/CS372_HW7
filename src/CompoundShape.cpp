@@ -37,6 +37,10 @@ auto CompoundShape::generatePostScriptForShape(const int &index) const
     -> std::string {
     return getShapes()[index]->getPostScript();
 }
+auto CompoundShape::calculateOffset(const double &lhs, const double &rhs)
+    -> double {
+    return (lhs / 2 + rhs / 2);
+}
 
 auto CompoundShape::getPostScript() const -> std::string {
     std::string result = gsave();
