@@ -23,6 +23,16 @@ using std::to_string;
 #define CenterX 306
 #define CenterY 396
 
+auto makeString() -> string;
+
+template <typename T> auto makeString(const T &val) -> string {
+    return to_string(val) + " ";
+}
+template <typename T, typename... Ts>
+auto makeString(const T &val, const Ts &...vals) -> string {
+    return makeString(val) + makeString(vals...);
+}
+
 auto header() -> string;
 auto newpath() -> string;
 auto currentpoint() -> string;
@@ -30,22 +40,49 @@ auto stroke() -> string;
 auto closepath() -> string;
 auto showpage() -> string;
 
-auto moveto(const int &x, const int &y) -> string;
-auto rmoveto(const int &x, const int &y) -> string;
-auto lineto(const int &x, const int &y) -> string;
-auto rlineto(const int &x, const int &y) -> string;
+template <typename T, typename U>
+auto moveto(const T &x, const U &y) -> string {
+    return makeString(x, y) + "moveto\n";
+}
+template <typename T, typename U>
+auto rmoveto(const T &x, const U &y) -> string {
+    return makeString(x, y) + "rmoveto\n";
+}
+template <typename T, typename U>
+auto lineto(const T &x, const U &y) -> string {
+    return makeString(x, y) + "lineto\n";
+}
+template <typename T, typename U>
+auto rlineto(const T &x, const U &y) -> string {
+    return makeString(x, y) + "rlineto\n";
+}
 auto gsave() -> string;
 auto grestore() -> string;
 
-auto point(const int &x, const int &y) -> string;
-auto arc(const double &r, const int &s, const int &f) -> string;
+template <typename T, typename U> auto point(const T &x, const U &y) -> string {
+    return makeString(x, y);
+}
+template <typename T, typename U>
+auto arc(const double &r, const T &s, const U &f) -> string {
+    return makeString(r, s, f) + "arc\n";
+}
 auto center() -> string;
 auto translate() -> string;
-auto translate(const int &x, const int &y) -> string;
-auto rotate(const int &angle) -> string;
-auto scale(const double &fx, const double &fy) -> string;
+template <typename T, typename U>
+auto translate(const T &x, const U &y) -> string {
+    return makeString(x, y) + "translate\n";
+}
+template <typename T> auto rotate(const T &angle) -> string {
+    return makeString(angle) + "lineto\n";
+}
+template <typename T> auto scale(const T &fx, const T &fy) -> string {
+    return makeString(fx, fy) + "scale\n";
+}
 
-auto setrgbcolor(const double &r, const double &g, const double &b) -> string;
+template <typename T>
+auto setrgbcolor(const T &r, const T &g, const T &b) -> string {
+    return makeString(r, g, b) + "setrgbcolor\n";
+}
 auto fill() -> string;
 
 #endif

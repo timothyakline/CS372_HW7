@@ -58,7 +58,7 @@ auto main() -> int {
     auto myVS = std::make_shared<VerticalShape>(std::make_shared<Circle>(38.7),
                                                 myTriangle, mySquare);
     std::cout << myVS->getHeight() << ", " << myVS->getWidth();
-    std::cout << std::endl;    
+    std::cout << std::endl;
     auto myHS = std::make_shared<HorizontalShape>(
         std::make_shared<Circle>(38.7), myTriangle, mySquare);
     std::cout << myHS->getHeight() << ", " << myHS->getWidth();
@@ -74,3 +74,52 @@ auto main() -> int {
     LayeredShape myLS;
     return 0;
 }
+/*306 306 moveto
+gsave
+                                    -14 0 rmoveto
+%-52 0 rmoveto
+%38 0 rmoveto
+gsave
+currentpoint
+translate
+newpath
+0 0 38.700000 0 360 arc
+closepath
+stroke
+grestore
+                                    46 0 rmoveto
+%38 0 rmoveto
+%8 0 rmoveto
+gsave
+currentpoint
+translate
+newpath
+0 0 8.900000 0 360 arc
+closepath
+stroke
+grestore
+                                    10 0 rmoveto
+%8 0 rmoveto
+%2 0 rmoveto
+gsave
+currentpoint
+translate
+newpath
+0 0 2.300000 0 360 arc
+closepath
+stroke
+grestore
+                                    4 0 rmoveto
+%2 0 rmoveto
+%2 0 rmoveto
+gsave
+currentpoint
+translate
+newpath
+0 0 2.300000 0 360 arc
+closepath
+stroke
+grestore
+2 0 rmoveto
+grestore
+showpage*/
