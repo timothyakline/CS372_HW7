@@ -29,11 +29,20 @@ void CompoundShape::updateDimensions(const width_type &wid,
     setHeight(hgt);
 }
 
-shape_container const &CompoundShape::getShapes() const { return shapes_; }
+auto CompoundShape::getShapes() const -> shape_container const & {
+    return shapes_;
+}
 
-void CompoundShape::outline(std::ostream &os) {
-    for (auto i = 0L; i < getShapes().size(); ++i) {
-        // moveToPositionForShape(i);
-        getShapes()[i]->doPostScript(os);
+auto CompoundShape::generatePostScriptForShape(const int &index) const
+    -> std::string {
+    return getShapes()[index]->getPostScript();
+}
+
+auto CompoundShape::getPostScript() const -> std::string {
+    std::string result = gsave();
+    for (auto index = 0L; index < getShapes().size(); ++index) {
+        result += moveToPositionForShape(index);
+        result += generatePostScriptForShape(index);
     }
+    return result;
 }

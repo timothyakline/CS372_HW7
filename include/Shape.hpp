@@ -6,8 +6,8 @@
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: 22 April 2021
-// VERS: 1.0
+// UPDT: 23 April 2021
+// VERS: 2.0
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
@@ -34,9 +34,9 @@ class IShape {
 // Helper class for the static_cast calls
 // https://www.fluentcpp.com/2017/05/19/crtp-helper/
 template <typename T> struct CRTPHelper {
-    //By reference
+    // By reference
     [[nodiscard]] auto underlying() -> T & { return static_cast<T &>(*this); }
-    //By const reference
+    // By const reference
     [[nodiscard]] auto underlying() const -> T const & {
         return static_cast<T const &>(*this);
     }
@@ -72,8 +72,7 @@ template <class TShape> class Shape : public IShape, public CRTPHelper<TShape> {
 // Default/Parameterized Constructor
 template <class TShape>
 inline Shape<TShape>::Shape(width_type width, height_type height)
-    : width_(width), height_(height)
-{};
+    : width_(width), height_(height){};
 
 /// Inline static polymorphic functions
 
@@ -91,15 +90,5 @@ template <class TShape>
 inline void Shape<TShape>::doPostScript(std::ostream &os) const {
     this->underlying().doPostScript(os);
 };
-
-// template <class TShape>
-// inline void Shape<TShape>::setWidth(const width_type &wid) {
-//    static_cast<TShape *>(this)->setWidth(wid);
-//}
-//
-// template <class TShape>
-// inline void Shape<TShape>::setHeight(const height_type &hgt) {
-//    static_cast<TShape *>(this)->setHeight(hgt);
-//}
 
 #endif // !SHAPE_HPP

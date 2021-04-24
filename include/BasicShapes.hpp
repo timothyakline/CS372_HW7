@@ -6,7 +6,7 @@
 // CRSE: F372 - Software Construction
 // PROF: Dr. Chris Hartman
 // STRT: 07 March 2021
-// UPDT: 22 April 2021
+// UPDT: 23 April 2021
 // VERS: 2.0
 #ifndef BASICSHAPES_HPP
 #define BASICSHAPES_HPP
@@ -20,10 +20,31 @@ class Circle : public Shape<Circle> {
     explicit Circle(double radius = 0.0);
 
   public:
-    void doPostScript(std::ostream &os) const override;
+    [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
     double radius_;
+};
+
+/// Rectangle
+// Creates a rectangle of a given width and height.
+class Rectangle : public Shape<Rectangle> {
+  public:
+    explicit Rectangle(width_type width = 0.0, height_type height = 0.0);
+
+  public:
+    [[nodiscard]] auto getPostScript() const -> std::string override;
+};
+
+/// Spacer
+// Like a rectangle, but without drawn borders.
+// A spacer is not visible on the page.
+class Spacer : public Shape<Spacer> {
+  public:
+    explicit Spacer(width_type width = 0.0, height_type height = 0.0);
+
+  public:
+    [[nodiscard]] auto getPostScript() const -> std::string override;
 };
 
 /// Polygon
@@ -41,29 +62,12 @@ class Polygon : public Shape<Polygon> {
     void initInteriorAngle();
 
   public:
-    void doPostScript(std::ostream &os) const override;
+    [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
     int numSides_;
     int interiorAngle_{INTERIOR_ANGLE_MIN};
     length_type sideLength_;
-};
-
-/// Rectangle
-// Creates a rectangle of a given width and height.
-class Rectangle : public Shape<Rectangle> {
-  public:
-    explicit Rectangle(width_type width = 0.0, height_type height = 0.0);
-    void doPostScript(std::ostream &os) const override;
-};
-
-/// Spacer
-// Like a rectangle, but without drawn borders.
-// A spacer is not visible on the page.
-class Spacer : public Shape<Spacer> {
-  public:
-    explicit Spacer(width_type width = 0.0, height_type height = 0.0);
-    void doPostScript(std::ostream &os) const override;
 };
 
 /// Square

@@ -49,7 +49,7 @@ class ScaledShape : public Shape<ScaledShape> {
 // shape is the maximum of the heights and widths of the component shapes.
 class LayeredShape : public CompoundShape {
   public:
-    explicit LayeredShape() : CompoundShape(){};
+    // explicit LayeredShape() : CompoundShape(){};
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename TShape> explicit LayeredShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
@@ -72,7 +72,7 @@ inline LayeredShape::LayeredShape(TShape &&...shapes)
 
 class VerticalShape : public CompoundShape {
   public:
-    explicit VerticalShape() : CompoundShape(){};
+    // explicit VerticalShape() : CompoundShape(){};
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename TShape> explicit VerticalShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
@@ -100,7 +100,7 @@ inline VerticalShape::VerticalShape(TShape &&...shapes)
 
 class HorizontalShape : public CompoundShape {
   public:
-    explicit HorizontalShape() : CompoundShape(){};
+    // explicit HorizontalShape() : CompoundShape(){};
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename TShape> explicit HorizontalShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>

@@ -16,23 +16,13 @@
 Circle::Circle(double radius)
     : Shape(radius * 2, radius * 2), radius_(radius) {}
 
-//Modified to copy the reference solution
-void Circle::doPostScript(std::ostream &os) const {
-    os << gsave() << currentpoint()
-       << /*rmoveto(getWidth() / 2, 0)*/ translate() << newpath() << point(0,0)
-       << arc(radius_, 0, Rotation_Angle::TAU)
-       << closepath() << stroke() << grestore();
+// From the reference solution
 }
 
 Rectangle::Rectangle(width_type width, height_type height)
     : Shape{width, height} {}
 
-//Modified to copy the reference solution
-void Rectangle::doPostScript(std::ostream &os) const {
-    os << gsave() << rmoveto(-getWidth() / 2, -getHeight() / 2)
-       << rlineto(getWidth(), 0) << rlineto(0, getHeight())
-       << rlineto(0, getHeight()) << rlineto(-1 * getWidth(), 0)
-       << closepath() << stroke() << grestore();
+// From the reference solution
 }
 
 Spacer::Spacer(width_type width, height_type height) : Shape{width, height} {}

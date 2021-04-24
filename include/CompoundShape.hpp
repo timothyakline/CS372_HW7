@@ -23,10 +23,12 @@ class CompoundShape : public Shape<CompoundShape> {
   protected:
     virtual void setWidth(const width_type &wid);
     virtual void setHeight(const height_type &hgt);
+    [[nodiscard]] virtual auto moveToPositionForShape(const long &index) const
+        -> std::string = 0;
     void initDimensions();
     void updateDimensions(const width_type &wid, const height_type &hgt);
 
-    [[nodiscard]] shape_container const &getShapes() const;
+    [[nodiscard]] auto getShapes() const -> shape_container const &;
 
   protected:
     /// addShapes [TERMINAL/VOID/NULL CASE]
@@ -54,8 +56,9 @@ class CompoundShape : public Shape<CompoundShape> {
         addShapes(shapes...);
     };
 
-    void generatePostScript(){};
-    void outline(std::ostream &os);
+    [[nodiscard]] auto getPostScript() const -> std::string override;
+    [[nodiscard]] auto generatePostScriptForShape(const int &index) const
+        -> std::string;
 
   private:
     shape_container shapes_{};
