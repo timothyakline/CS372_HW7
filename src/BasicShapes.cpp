@@ -20,7 +20,7 @@ Circle::Circle(double radius)
 auto Circle::getPostScript() const -> std::string {
     return gsave() + currentpoint() +
            /*rmoveto(getWidth() / 2, 0)*/ translate() + newpath() +
-           point(0, 0) + arc(radius_, 0, Rotation_Angle::TAU) + closepath() +
+           point(0, 0) + arc(radius_, 0, Rot_Angle::TAU) + closepath() +
            stroke() + grestore();
 }
 
@@ -48,29 +48,33 @@ Polygon::Polygon(int numSides, length_type sideLength)
 
 // From the Reference Solution
 void Polygon::initHeight() {
+    height_type height;
     if (numSides_ % 2 == 0) {
-        height_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
+        height = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
     } else {
-        height_ =
+        height =
             sideLength_ * (1 + cos(PI / numSides_)) / (2 * sin(PI / numSides_));
     }
+    setHeight(height);
 }
 
 // From the Reference Solution
 void Polygon::initWidth() {
+    width_type width;
     if (numSides_ % 4 == 0) {
-        width_ = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
+        width = sideLength_ * cos(PI / numSides_) / sin(PI / numSides_);
     } else if (numSides_ % 2 == 0) {
-        width_ = sideLength_ / sin(PI / numSides_);
+        width = sideLength_ / sin(PI / numSides_);
     } else {
-        width_ = sideLength_ * sin(PI * (numSides_ - 1) / (2 * numSides_)) /
+        width = sideLength_ * sin(PI * (numSides_ - 1.0) / (2.0 * numSides_)) /
                  sin(PI / numSides_);
     }
+    setWidth(width);
 }
 
 void Polygon::initInteriorAngle() {
-    interiorAngle_ = Rotation_Angle::HALF -
-                     (((numSides_ - 2) * Rotation_Angle::HALF) / numSides_);
+    interiorAngle_ = (int)Rot_Angle::HALF -
+                     (((numSides_ - 2) * (int)Rot_Angle::HALF) / numSides_);
 }
 
 auto Polygon::getPostScript() const -> std::string {

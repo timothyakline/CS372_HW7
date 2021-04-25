@@ -8,18 +8,18 @@
 // VERS: 1.0
 #include "../include/CompoundShape.hpp"
 
-void CompoundShape::setWidth(const width_type &wid) {
-    width_ = std::max(width_, wid);
+void CompoundShape::initWidth(const width_type &wid) {
+    setWidth(std::max(getWidth(), wid));
 }
 
-void CompoundShape::setHeight(const height_type &hgt) {
-    height_ = std::max(height_, hgt);
+void CompoundShape::initHeight(const height_type &hgt) {
+    setHeight(std::max(getHeight(), hgt));
 }
 
-void CompoundShape::initDimensions() {
+void CompoundShape::initDimensions() const {
     for (const auto &s : shapes_) {
-        setWidth(s->getWidth());
-        setHeight(s->getHeight());
+        initWidth(s->getWidth());
+        initHeight(s->getHeight());
     }
 }
 

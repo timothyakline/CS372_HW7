@@ -1,33 +1,34 @@
 #include "../include/makeShapes_helper.hpp"
 
-shape_ptr makeCircle(double radius) { return std::make_shared<Circle>(radius); }
+auto makeCircle(double radius) -> shape_ptr {
+    return std::make_shared<Circle>(radius);
+}
 
-shape_ptr makeRectangle(width_type width, height_type height) {
+auto makeRectangle(width_type width, height_type height) -> shape_ptr {
     return std::make_shared<Rectangle>(width, height);
 }
 
-shape_ptr makeSpacer(width_type width, height_type height) {
+auto makeSpacer(width_type width, height_type height) -> shape_ptr {
     return std::make_shared<Spacer>(width, height);
 }
 
-shape_ptr makePolygon(int numSides, length_type sideLength) {
+auto makePolygon(int numSides, length_type sideLength) -> shape_ptr {
     return std::make_shared<Polygon>(numSides, sideLength);
 }
 
-shape_ptr makeSquare(length_type sideLength) {
+auto makeSquare(length_type sideLength) -> shape_ptr {
     return std::make_shared<Square>(sideLength);
 }
 
-shape_ptr makeTriangle(length_type sideLength) {
+auto makeTriangle(length_type sideLength) -> shape_ptr {
     return std::make_shared<Triangle>(sideLength);
 }
 
-shape_ptr makeScaledShape(shape_ptr shape, scale_precision_type xScale,
-                          scale_precision_type yScale) {
+auto makeScaledShape(shape_ptr shape, scale_precision_type xScale,
+                     scale_precision_type yScale) -> shape_ptr {
     return std::make_shared<ScaledShape>(shape, xScale, yScale);
 }
 
-shape_ptr makeRotatedShape(shape_ptr shape, Rotation_Angle rotation) {
+auto makeRotatedShape(shape_ptr shape, Rot_Angle rotation) -> shape_ptr {
     return std::make_shared<RotatedShape>(shape, rotation);
 }
-

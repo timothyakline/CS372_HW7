@@ -18,14 +18,13 @@
 class RotatedShape : public Shape<RotatedShape> {
   public:
     RotatedShape(shape_ptr shape,
-                 const Rotation_Angle &rotationAngle = Rotation_Angle::NONE);
+                 const Rot_Angle &rotationAngle = Rot_Angle::NONE);
 
-  public:
     [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
     shape_ptr shape_;
-    Rotation_Angle rotation_;
+    Rot_Angle rotation_;
 };
 
 // Takes a shape, a horizontal scaling factor `fx`, and a vertical scaling
@@ -36,7 +35,6 @@ class ScaledShape : public Shape<ScaledShape> {
     ScaledShape(shape_ptr shape, const scale_precision_type &fx,
                 const scale_precision_type &fy);
 
-  public:
     [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
@@ -51,7 +49,7 @@ class ScaledShape : public Shape<ScaledShape> {
 // shape is the maximum of the heights and widths of the component shapes.
 class LayeredShape : public CompoundShape {
   public:
-    // explicit LayeredShape() : CompoundShape(){};
+    explicit LayeredShape() : CompoundShape(){};
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename TShape> explicit LayeredShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
@@ -75,7 +73,7 @@ inline LayeredShape::LayeredShape(TShape &&...shapes)
 
 class VerticalShape : public CompoundShape {
   public:
-    // explicit VerticalShape() : CompoundShape(){};
+    explicit VerticalShape() : CompoundShape(){};
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename TShape> explicit VerticalShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
@@ -100,7 +98,7 @@ inline VerticalShape::VerticalShape(TShape &&...shapes)
 
 class HorizontalShape : public CompoundShape {
   public:
-    // explicit HorizontalShape() : CompoundShape(){};
+    explicit HorizontalShape() : CompoundShape(){};
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>
     template <typename TShape> explicit HorizontalShape(TShape &&shape);
     //[PRECOND] `TShape` must be a std::shared_ptr<IShape>

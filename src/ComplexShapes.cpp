@@ -12,17 +12,19 @@
 #include "../include/ComplexShapes.hpp"
 #include <algorithm>
 
-RotatedShape::RotatedShape(shape_ptr shape, const Rotation_Angle &rotationAngle)
-    : Shape{shape->getWidth(), shape->getHeight()}, shape_(std::move(shape)),
+RotatedShape::RotatedShape(shape_ptr shape, const Rot_Angle &rotationAngle)
+    : Shape{shape->getWidth(), shape->getHeight()},
       rotation_(rotationAngle) {
     switch (rotation_) {
-    case QUARTER:
-    case THREE_QTRS:
-        std::swap(height_, width_);
+    case Rot_Angle::QUARTER:
+    case Rot_Angle::THREE_QTRS:
+        setWidth(shape->getHeight());
+        setHeight(shape->getWidth());
         break;
     default:
         break;
     }
+    shape_ = std::move(shape);
 }
 
 auto RotatedShape::getPostScript() const -> std::string {

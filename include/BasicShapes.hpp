@@ -19,7 +19,6 @@ class Circle : public Shape<Circle> {
   public:
     explicit Circle(double radius = 0.0);
 
-  public:
     [[nodiscard]] auto getPostScript() const -> std::string override;
 
   private:
@@ -32,7 +31,6 @@ class Rectangle : public Shape<Rectangle> {
   public:
     explicit Rectangle(width_type width = 0.0, height_type height = 0.0);
 
-  public:
     [[nodiscard]] auto getPostScript() const -> std::string override;
 };
 
@@ -43,7 +41,6 @@ class Spacer : public Shape<Spacer> {
   public:
     explicit Spacer(width_type width = 0.0, height_type height = 0.0);
 
-  public:
     [[nodiscard]] auto getPostScript() const -> std::string override;
 };
 

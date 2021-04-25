@@ -20,23 +20,23 @@ class CompoundShape : public Shape<CompoundShape> {
     template <typename TShape> explicit CompoundShape(TShape &&shape);
     template <typename... TShape> explicit CompoundShape(TShape &&...shapes);
 
-  protected:
-    virtual void setWidth(const width_type &wid);
-    virtual void setHeight(const height_type &hgt);
+    virtual void initWidth(const width_type &wid);
+    virtual void initHeight(const height_type &hgt);
     [[nodiscard]] virtual auto moveToPositionForShape(const long &index) const
         -> std::string = 0;
-    void initDimensions();
+    void initDimensions() const;
     void updateDimensions(const width_type &wid, const height_type &hgt);
 
     [[nodiscard]] auto getShapes() const -> shape_container const &;
     [[nodiscard]] static auto calculateOffset(const double &lhs,
                                               const double &rhs) -> double;
 
-  protected:
     /// addShapes [TERMINAL/VOID/NULL CASE]
     // Recursive Variadic Template functions
     // To add shapes to an existing CompoundShape object
-    void addShapes(){};
+    void addShapes() const {
+        /*in-case of misuse*/
+    };
 
   public:
     /// addShapes [BASE CASE]

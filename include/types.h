@@ -27,7 +27,7 @@ using shape_ptr = std::shared_ptr<IShape>;
 using shape_container = std::vector<shape_ptr>;
 
 // Enum for select rotation angles
-enum Rotation_Angle {
+enum Rot_Angle {
     NONE = 0,
     QUARTER = 90,
     HALF = 180,

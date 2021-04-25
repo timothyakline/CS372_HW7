@@ -13,8 +13,10 @@
 
 #include "../include/PostScript_bridge.hpp"
 #include <cmath>
+#include <iostream>
 
 #include "types.h"
+
 
 // IShape
 // Abstract interface for the Shape class
@@ -26,6 +28,8 @@ class IShape {
     [[nodiscard]] virtual auto getWidth() const -> width_type = 0;
     [[nodiscard]] virtual auto getHeight() const -> height_type = 0;
     [[nodiscard]] virtual auto getPostScript() const -> std::string = 0;
+    virtual void setWidth(const width_type &wid) = 0;
+    virtual void setHeight(const height_type &hgt) = 0;
 };
 
 // CRTPHelper
@@ -48,14 +52,16 @@ template <class TShape> class Shape : public IShape, public CRTPHelper<TShape> {
   protected:
     Shape(width_type width = 0, height_type height = 0);
     Shape(const Shape &) = default;
-    Shape(Shape &&) = default;
+    Shape(Shape &&) noexcept = default;
 
   public:
     [[nodiscard]] auto getWidth() const -> width_type override;
     [[nodiscard]] auto getHeight() const -> height_type override;
-    [[nodiscard]] auto getPostScript() const -> std::string override;
-
-  protected:
+    void setWidth(const width_type &wid) override;
+    void setHeight(const height_type &hgt) override;
+  
+  // CppCG C.133
+  private:
     width_type width_;
     height_type height_;
 
@@ -68,23 +74,28 @@ template <class TShape> class Shape : public IShape, public CRTPHelper<TShape> {
 // Default/Parameterized Constructor
 template <class TShape>
 inline Shape<TShape>::Shape(width_type width, height_type height)
-    : width_(width), height_(height){};
+    : width_(width), height_(height) {
+    std::cout << "ello, i am a new born base class\n";
+};
 
 /// Inline static polymorphic functions
 
 template <class TShape>
 inline auto Shape<TShape>::getHeight() const -> height_type {
     return this->underlying().height_;
+}
+template <class TShape>
+inline void Shape<TShape>::setWidth(const width_type &wid) {
+    this->underlying().width_ = wid;
+}
+template <class TShape>
+inline void Shape<TShape>::setHeight(const height_type &hgt) {
+    this->underlying().height_ = hgt;
 };
 
 template <class TShape>
 inline auto Shape<TShape>::getWidth() const -> width_type {
     return this->underlying().width_;
-};
-
-template <class TShape>
-inline auto Shape<TShape>::getPostScript() const -> std::string {
-    return this->underlying().getPostScript();
 };
 
 #endif // !SHAPE_HPP
